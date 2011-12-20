@@ -1,6 +1,9 @@
 (defpackage #:test6
   (:use :cl :weblocks
-        :f-underscore :anaphora)
+        :f-underscore :anaphora 
+        :drakma 
+        :yaclml
+        :cl-smtp)
   (:import-from :hunchentoot #:header-in
     #:set-cookie #:set-cookie* #:cookie-in
     #:user-agent #:referer)
