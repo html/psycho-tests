@@ -4,25 +4,18 @@
 (defparameter *logout-action* "logout")
 
 (defmacro %current-user ()
-  `(webapp-session-value 'current-user))
+  `(first (multiple-value-list  (webapp-session-value *authentication-key*))))
 
 (defun current-user ()
   (or (%current-user) 
       (and *debug-auto-login*  
            (prog1  
-             (setf (%current-user) (first  (find-persistent-objects *default-store* 'user)))
-             (setf (webapp-session-value *authentication-key*) (values (%current-user) t))))))
-
-(defun authenticatedp ()
-  (if *debug-auto-login*
-    (current-user)
-    (multiple-value-bind (auth-info success)
-      (webapp-session-value *authentication-key*)
-      (when success auth-info))))
+             (setf (webapp-session-value *authentication-key*) 
+                   (values 
+                     (first  (find-persistent-objects *default-store* 'user)) t))))))
 
 (defun/cc logout-action (&rest args)
   (register-event "logged-out" :user (object->simple-plist (current-user)))
-  (mark-dirty (root-widget))
   (logout)
   (redirect (make-action-url "main")))
 
@@ -64,7 +57,8 @@
                             (function-or-action->action 
                               (lambda (&rest args)
                                 (let ((*debug-auto-login* t))
-                                  (current-user)))))
+                                  (current-user)
+                                  (redirect (make-action-url "my-profile") :defer nil)))))
                     :title "Test" 
                     "Login")))))
 
