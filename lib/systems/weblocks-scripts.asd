@@ -1,0 +1,1 @@
+../src/weblocks-dev/weblocks-scripts.asd

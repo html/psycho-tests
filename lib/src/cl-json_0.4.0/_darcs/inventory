@@ -1,0 +1,52 @@
+Starting with tag:
+[TAG 0.4-bundle
+Henrik Hjelte <henrik@evahjelte.com>**20090414092417
+ Ignore-this: f9a65f0d3c8666061c8de4ed5c153b6e
+] 
+[Discarded vector accumulators in favour of list accumulators.
+Boris Smilga <boris.smilga@gmail.com>**20090420000832
+ The former do not improve performance as I was hoping, if anything, they
+ harm it.
+] 
+[test json-number remove sbcl special case
+Henrik Hjelte <henrik@evahjelte.com>**20090427193326
+ Ignore-this: c8e57b25ba18170804d15ce174dde08d
+ Now it works on sbcl 1.0.27.9
+] 
+[Added section on CLOS decoder security to documentation.
+Boris Smilga <boris.smilga@gmail.com>**20090502004750] 
+[Optimized string decoding.
+Boris Smilga <boris.smilga@gmail.com>**20090502004941
+ 1) Through the use of string-stream accumulators.
+ 2) By compiling escape char lookup as a CASE construction.
+] 
+[Corrected compilation safeguards for SBCL in the JSON-NUMBER test.
+Boris Smilga <boris.smilga@gmail.com>**20090502005014] 
+[Added some info to the docs
+Henrik Hjelte <henrik@evahjelte.com>**20090525184002
+ Ignore-this: 1e8a9b7f5dd43e65cc007cf8c281e7d6
+] 
+[Added CONTRIBUTORS
+Henrik Hjelte <henrik@evahjelte.com>**20090525184013
+ Ignore-this: a28609b5ce69a2ba375075ca2b91bc99
+] 
+[asd file changed henrik from :author to :maintainer
+Henrik Hjelte <henrik@evahjelte.com>**20090525184442
+ Ignore-this: 860a55cad53d80766aec3d6f05a93924
+] 
+[Correct new version is 0.4.0
+Henrik Hjelte <henrik@evahjelte.com>**20090525184459
+ Ignore-this: 5cc8f2cb4f2f17e4cab91ed9c4b50437
+] 
+[Removed obsolete TODO file
+Henrik Hjelte <henrik@evahjelte.com>**20090525184919
+ Ignore-this: 5d276e72a10f3b92b7c0de4a78318e26
+] 
+[Remove old docs (index.html)
+Henrik Hjelte <henrik@evahjelte.com>**20090525185140
+ Ignore-this: fc4e54adfd5c80f458cec94d7711df4f
+] 
+[TAG 0.4.0
+henrik@evahjelte.com**20090525190005
+ Ignore-this: cb4f0fc56b8bfd3d1e46dd9257ae4e3a
+] 

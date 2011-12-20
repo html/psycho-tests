@@ -1,0 +1,1 @@
+../src/terminfo_1.3/terminfo.asd

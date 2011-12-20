@@ -1,0 +1,1 @@
+../src/cl-fad-0.6.2/cl-fad.asd

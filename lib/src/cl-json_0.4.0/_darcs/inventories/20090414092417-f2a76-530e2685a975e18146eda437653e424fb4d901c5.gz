@@ -1,0 +1,153 @@
+Starting with tag:
+[TAG Pre-0.4-bundle
+Henrik Hjelte <henrik@evahjelte.com>**20090414085958
+ Ignore-this: 91e69af5b92fef3c3298463937b9fb72
+] 
+[Moved conversion between Lisp and camel case to separate file.
+Boris Smilga <boris.smilga@gmail.com>**20081203150914] 
+[Added copyright notices and LICENSE.
+Boris Smilga <boris.smilga@gmail.com>**20081204184800] 
+[Moved the customizable decoder (special-vars flavour) over to the main branch.
+Boris Smilga <boris.smilga@gmail.com>**20081204190202] 
+[Various modifications, mostly concerning the encoder.
+Boris Smilga <boris.smilga@gmail.com>**20081207180809
+ 
+ * Case translation (in both directions) shall be customizable
+   using the variables *JSON-IDENTIFIER-NAME-TO-LISP* and
+   *LISP-IDENTIFIER-NAME-TO-JSON*.
+ 
+ * Boolean encoder shall use the same parameter as the corresponding
+   decoder (+JSON-LISP-SYMBOL-TOKENS+).
+ 
+ * String character encoder shall use for the unicode escape sequence
+   (\uXXXX) the spec in the parameter +JSON-LISP-ESCAPED-CHARS+, just as
+   it is done by the corresponding decoder.  The spec shall contain the
+   width and radix of the coding sequence.
+ 
+ * The STREAM argument to ENCODE-JSON shall be optional, defaulting to
+   *STANDARD-OUTPUT* (symmetrically to DECODE-JSON).
+ 
+ * [NB] Encoding has been completely re-implemented using the streaming
+   API from YASON.
+ 
+ * Plists shall have "lispClass":"list" in the prototype.
+ 
+ * Fixed bug in JSON-INTERN: INTERN could be fallaciously passed NIL as
+   its PACKAGE argument.
+] 
+[Fixed: adding prototype to designated slot had been left out of the customized decoder.
+Boris Smilga <boris.smilga@gmail.com>**20081207184042] 
+[Added customization parameter *INTERNAL-DECODER*.
+Boris Smilga <boris.smilga@gmail.com>**20081212211209
+ This makes for a more intuitive way of controlling the decoding
+ of nested structures.
+] 
+[Various modifications, mostly concerning the decoder.
+Boris Smilga <boris.smilga@gmail.com>**20090121145627
+ 
+ * Added function PEEK-JSON-TOKEN and rewrote DECODE-JSON-ARRAY to eliminate
+   abstraction leak (token and category as arguments to *INTERNAL-DECODER*
+   functions).
+ 
+ * Added macros BIND-CUSTOM-VARS, CUSTOM-DECODER, CURRENT-DECODER,
+   WITH-CUSTOM-DECODER-LEVEL.
+ 
+ * Modularized structure-scope variable lists into object-, array-, string-
+   and common aggregate-scope lists.
+   
+ * Added lots of docstrings.
+ 
+ * Fixed (potential) bugs: internal decoder was not being set by semantics
+   setters; array type was not being set to LIST in the prototype decoder.
+] 
+[Various modifications, mostly concerning the encoder.
+Boris Smilga <boris.smilga@gmail.com>**20090121153449
+ 
+ * No prototype shall henceforth be output by the encoder.  The prototype
+   won't be interesting for a remote party in most cases.  If it is, the
+   local party is free to provide explicit prototype slots in its objects.
+ 
+ * Added lots of docstrings.
+ 
+ * Fixed bug: escaped string char was not being printed after backslash.
+] 
+[Re-implemented JSON-BIND (to illustrate dynamic customization).
+Boris Smilga <boris.smilga@gmail.com>**20090121174922] 
+[Updated export list of the package JSON.
+Boris Smilga <boris.smilga@gmail.com>**20090122091309] 
+[Made *JSON-ARRAY-TYPE* a custom variable and assigned specific values for the two simple semantics.
+Boris Smilga <boris.smilga@gmail.com>**20090122102158] 
+[Modified the way objects are decoded to CLOS objects in the absence of prototypes.
+Boris Smilga <boris.smilga@gmail.com>**20090122113959
+ 
+ Originally, an anonymous singleton class was created for each unprototyped
+ object received by the decoder.  It turned out that this approach can lead to
+ strong degradation of performance.  E. g., OpenMCL employs an optimization
+ technique which includes caching methods of generic function based on the
+ classes of their arguments.  If classes proliferate beyond measure, the effect
+ of caching is the opposite of intended.
+ 
+ The new approach is to keep a table of classes (mapping from lists of classes
+ such as prototyped lispSuperclasses to anonymous fluid classes).  For every
+ received unprototyped object we either create a new entry or, if a class with
+ exactly the same list of superclasses is already in the table, update it to
+ include the new slots.  Anyway, a typical remote party (such as a web app)
+ can be expected to have only a few different object configurations.
+ 
+ The code is now much cleaner and includes a rounded-up interface to fluid
+ classes.  A lot of docstrings has been added as well.
+] 
+[Restored handling of floats which are too big to be read.
+Boris Smilga <boris.smilga@gmail.com>**20090124181930
+ The new implementation replaces fall-back function handler with restarts
+ (returning prefixed string, rational approximation, or user-supplied 
+ placeholder) which seems more proper in this context.
+] 
+[Fixed bugs introduced by recent additions and detected by our tests.
+Boris Smilga <boris.smilga@gmail.com>**20090124181936] 
+[Updated tests to go with the recent modifications (customizable decoder / encoder etc.)
+Boris Smilga <boris.smilga@gmail.com>**20090124221835] 
+[Improvements and clarifications of code in light of the new documentation.
+Boris Smilga <boris.smilga@gmail.com>**20090223193516
+ 
+ * Improved error handling: several ostensibly exceptional
+   situations which were previously handled inconsistently (or not
+   handled at all) are now reified as condition types and
+   restarts, among them new ones: UNENCODABLE-VALUE-ERROR,
+   SUBSTITUTE-PRINTED-REPRESENTATION, BIGNUMBER-STRING,
+   RATIONAL-APPROXIMATION, PLACEHOLDER.
+ 
+ * Added function DECODE-JSON-FROM-SOURCE.
+ 
+ * Encoding and decoding operations shall henceforth have their
+   own default streams, *JSON-OUTPUT* and *JSON-INPUT*.
+ 
+ * It is now permissible to use strings as prototypes.  (String
+   prototype is interpreted as the name of the class, interned in
+   the current *JSON-SYMBOLS-PACKAGE*.)
+ 
+ * Fixed some bugs (and sources of compiler warnings).
+ 
+ * Fixed some documentation strings, argument naming and
+   passing conventions, and return values.
+ 
+ * Fixed some copyright notices.
+ 
+ * Improved implementation of JSON-BIND.
+ 
+ * Put CLOS semantics under conditional compilation guards.
+ 
+ * Advanced the version number to 0.4.0.
+] 
+[Removed symboltojs.lisp, as the functionality of SYMBOL-TO-JS is subsumed by LISP-TO-CAMEL-CASE.  Fixed conflicts which the patches of Dec. 8, 2008 were causing with more recent ones.
+Boris Smilga <boris.smilga@gmail.com>**20090223203232] 
+[Resolved conflict with patch Thu Feb 26 15:22:25 MSK 2009  Henrik Hjelte <henrik@evahjelte.com>.
+Boris Smilga <boris.smilga@gmail.com>**20090313172519] 
+[Workaround for the Clozure idiosyncrasy that the patch Thu Feb 26 15:22:25 MSK 2009  Henrik Hjelte <henrik@evahjelte.com> used to solve.
+Boris Smilga <boris.smilga@gmail.com>**20090313194131] 
+[Fixes for bugs detected by testing in CMUCL and ECL.
+Boris Smilga <boris.smilga@gmail.com>**20090313194905] 
+[Edited docstrings and changed some names to make for a more reasonable documentation.
+Boris Smilga <boris.smilga@gmail.com>**20090321213714] 
+[Added new documentation in doc/cl-json.html.
+Boris Smilga <boris.smilga@gmail.com>**20090406003011] 
