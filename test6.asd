@@ -28,12 +28,17 @@
          (:file "show-profile-page"))
         :depends-on ("util"))
        (:module "model" :components 
-        ((:file "user")))
+        ((:file "user")
+         (:file "test-result")
+         (:file "responder")))
        (:module "widgets" :components 
-        ((:file "register-by-email")))
+        ((:file "register-by-email")
+         (:file "test-widget")))
        (:module "views" :components 
         ((:file "register-form-views")
-         (:file "login-form-views")))
+         (:file "login-form-views")
+         (:file "test-result")
+         (:file "responder-views")))
        (:file "validations"))
        :depends-on ("test6" conf lib))
      (:module lib :components 

@@ -4,7 +4,7 @@
 (defparameter *logout-action* "logout")
 
 (defmacro %current-user ()
-  `(first (multiple-value-list  (webapp-session-value *authentication-key*))))
+  `(webapp-session-value *authentication-key*))
 
 (defun current-user ()
   (or (%current-user) 
@@ -30,7 +30,8 @@
   (let ((permanent-actions 
           `(("my-profile" show-profile-page)
             (,*logout-action* logout-action)
-            ("main" main-action))))
+            ("main" main-action)
+            ("test" test-action))))
     (loop for i in permanent-actions do
           (apply #'weblocks::add-webapp-permanent-action (list*  'test6 i))))
 

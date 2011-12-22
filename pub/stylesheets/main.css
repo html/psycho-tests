@@ -116,7 +116,6 @@ h1, h2
 {
   display: -moz-inline-box;
   display: inline-block;
-  width: 12em;
 }
 
 .view .extra-bottom-1
@@ -169,12 +168,6 @@ input[type=hidden]
                      + (documentElement.clientWidth - this.clientWidth))
                    + 'px')
   top: expression(documentElement.scrollTop + 'px');
-}
-
-/* Common styles for form, and data */
-.data, .form
-{
-  width: 27em;
 }
 
 /* Align text that spans in multiple lines in data and form views */ 
@@ -270,3 +263,18 @@ div.empty p span.caption
   color:gray;
 }
 
+
+/* My Updates */
+span.slot-name {
+    display: block;
+    float:left;
+}
+
+div.maybe-error {
+    float:right;
+}
+
+label.checkbox {
+    height: 20px;
+    display: block;
+}

@@ -9,6 +9,11 @@
           (with-yaclml
             (<:div :style "float:right"
                    (<:as-is (render-inline-link *logout-action* "Logout"))) 
-            (<:img :src (avatar-url (current-user)))))))))
+            (<:as-is (render-inline-link "test" "Add test result"))
+            (<:h1 "Results of testing"))
+          (render-widget (make-instance 'datagrid :data-class 'test-result :view 'test-result-table-view))
+          (with-yaclml 
+            (<:h1 "People tested"))
+          (render-widget (make-instance 'datagrid :data-class 'responder :view 'responder-table-view)))))))
 
 

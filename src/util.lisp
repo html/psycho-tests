@@ -86,3 +86,6 @@
                                  label)))))
     (log-link label action-code :id id :class class)
     return))
+
+(defun dbg (&rest args)
+  (error (format nil "~{~A~%~}" args)))
