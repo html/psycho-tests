@@ -274,7 +274,7 @@ div.maybe-error {
     float:right;
 }
 
-label.checkbox {
-    height: 20px;
+label.checkbox, label.select {
+    height: 21px;
     display: block;
 }

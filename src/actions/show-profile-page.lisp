@@ -14,6 +14,15 @@
           (render-widget (make-instance 'datagrid :data-class 'test-result :view 'test-result-table-view))
           (with-yaclml 
             (<:h1 "People tested"))
-          (render-widget (make-instance 'datagrid :data-class 'responder :view 'responder-table-view)))))))
+          (render-widget 
+            (make-instance 'responders-grid 
+                           :data-class 'responder 
+                           :view 'responder-table-view 
+                           :new-item-form-view 'new-responder-form-view
+                           :item-form-view 'responder-form-view))
+          (with-yaclml 
+            (<:h1 "People groups"))
+          (render-widget (make-instance 'gridedit :data-class 'group))
+          )))))
 
 

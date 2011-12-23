@@ -30,16 +30,21 @@
        (:module "model" :components 
         ((:file "user")
          (:file "test-result")
-         (:file "responder")))
+         (:file "responder")
+         (:file "group")
+         (:file "testing")
+         (:file "responder-group")))
        (:module "widgets" :components 
         ((:file "register-by-email")
-         (:file "test-widget")))
+         (:file "test-widget")
+         (:file "responders-grid")))
        (:module "views" :components 
         ((:file "register-form-views")
          (:file "login-form-views")
          (:file "test-result")
          (:file "responder-views")))
-       (:file "validations"))
+         (:file "validations")
+         (:file "select-presentation"))
        :depends-on ("test6" conf lib))
      (:module lib :components 
       ((:file "render-page-update")))))

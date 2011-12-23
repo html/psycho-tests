@@ -2,4 +2,5 @@
 
 
 (defclass responder ()
-  ((name :initform nil :accessor name :initarg :name)))
+  ((id)
+   (name :initform nil :accessor responder-name :initarg :name)))

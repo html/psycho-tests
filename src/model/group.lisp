@@ -1,4 +1,5 @@
 (in-package :test6)
 
 (defclass group ()
-  ((name :initarg :name :initform nil)))
+  ((id)
+   (name :initarg :name :initform nil :accessor group-name)))

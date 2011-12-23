@@ -89,3 +89,30 @@
 
 (defun dbg (&rest args)
   (error (format nil "~{~A~%~}" args)))
+
+(defun all-of (cls)
+  (find-persistent-objects *default-store* cls))
+
+(defun destroy (obj)
+  (delete-persistent-object *default-store* obj))
+
+(defun destroy-all (cls)
+  (mapcar #'destroy (all-of cls))) 
+
+(defun find-by-values (class &rest args &key (test #'equal) &allow-other-keys)
+  (let ((old-package *package*))
+    (in-package :test6) 
+    (defun filter-by-values (object)
+      (loop for key in args by #'cddr do 
+            (let ((value (getf args key))
+                  (test-fun test))
+              (when (and (consp value) (functionp (cdr value)))
+                (setf test-fun (cdr value))
+                (setf value (car value)))
+              (unless (funcall test value (slot-value object (intern (string  key))))
+                (return-from filter-by-values nil))))
+      t) 
+
+    (let ((return (find-persistent-objects *default-store* class :filter #'filter-by-values))) 
+      (eval `(in-package ,(package-name old-package)))
+      return)))
