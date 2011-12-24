@@ -116,3 +116,16 @@
     (let ((return (find-persistent-objects *default-store* class :filter #'filter-by-values))) 
       (eval `(in-package ,(package-name old-package)))
       return)))
+
+(defun find-by-predicate (class predicate)
+  (find-persistent-objects *default-store* class :filter predicate))
+
+(defmacro with-yaclml (&body body)
+  "A wrapper around cl-yaclml with-yaclml-stream macro."
+  `(yaclml:with-yaclml-stream *weblocks-output-stream*
+     ,@body))
+
+(defmacro capture-weblocks-output (&body body)
+  `(let ((*weblocks-output-stream* (make-string-output-stream)))
+     ,@body 
+     (get-output-stream-string *weblocks-output-stream*)))

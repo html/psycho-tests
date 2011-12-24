@@ -278,3 +278,43 @@ label.checkbox, label.select {
     height: 21px;
     display: block;
 }
+
+.state-checked {
+    background-image: url(/pub/images/badge/badge.png);
+}
+
+.state-unchecked {
+    background-image: url(/pub/images/badge/badge-transparent.png);
+}
+
+.check-button a {
+    font-weight: bold;
+    background-position: right;
+    width: 150px;
+    height: 20px;
+    display: block;
+    padding: 5px;
+    -webkit-transform: rotate(-30deg);
+    position: absolute;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    bottom: 40px;
+    left: 0;
+}
+
+.outer-badge {
+    float:left;
+    width: 70px;
+    position: relative;
+    border:1px solid transparent;
+    height: 100%;
+}
+
+.badges {
+    height: 110px;
+}
+
+.edit-link a {
+    position:absolute;bottom:0;white-space:nowrap;
+}

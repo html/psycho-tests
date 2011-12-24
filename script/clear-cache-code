@@ -1,0 +1,3 @@
+CACHE_PATH=~/.cache/common-lisp/sbcl-1.0.40.0.debian-linux-x86
+#echo "$CACHE_PATH$(dirname $(dirname $(realpath $0)))"
+rm -rf "$CACHE_PATH$(dirname $(dirname $(realpath $0)))" && echo "Cache cleared"

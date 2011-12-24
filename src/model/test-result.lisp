@@ -10,3 +10,6 @@
 
 (defmethod render-result ((model test-result))
   "Rendered result must be here")
+
+(defmethod groups-ids ((obj test-result))
+  (mapcar #'object-id (mapcar #'test-result-testing-test-result (find-by-value 'test-result-testing 'test-result obj))))

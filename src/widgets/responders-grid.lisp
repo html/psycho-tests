@@ -28,6 +28,41 @@
                  :data-view (dataedit-item-data-view grid)
                  :form-view (grid-separated-form-views-new-item-form-view grid)))
 
+(defmacro groups-filter ()
+  `(lambda (grid sort some  &rest args &key countp) 
+     (let* ((display-ungrouped-p (responders-grid-display-ungroupedp grid))
+            (groups-displayed (responders-grid-groups-displayed grid))
+            (items (find-by-predicate 
+                     (dataseq-data-class grid)
+                     (lambda (item)
+                       (defun any-group-matches (groups1 groups2)
+                         (loop for i in groups2 
+                               do (if (find i groups1 :test #'string=)
+                                    (return-from any-group-matches t))))
+                       (let ((groups-ids (groups-ids item)))
+                         (if groups-ids
+
+                           (progn
+                             (format t "Groups displayed ~A Groups ids ~A ~A~%" 
+                                     (mapcar #'write-to-string groups-displayed)
+                                     (mapcar #'write-to-string groups-ids)
+                                     (any-group-matches 
+                                       (mapcar #'write-to-string groups-displayed) 
+                                       (mapcar #'write-to-string groups-ids)))
+                             (any-group-matches 
+                               (mapcar #'write-to-string groups-displayed) 
+                               (mapcar #'write-to-string groups-ids)))
+                           display-ungrouped-p)))))) 
+       (if countp 
+         (length items)
+         items))))
+
 (defwidget responders-grid (grid-separated-form-views)
-  ())
+  ((groups-displayed :initarg :groups-displayed 
+                     :initform (mapcar #'object-id (all-of 'group))
+                     :accessor responders-grid-groups-displayed)
+   (display-ungroupedp :initarg :display-ungrouped-p :initform t :accessor responders-grid-display-ungroupedp))
+  (:default-initargs 
+   :on-query (groups-filter)))
+                 
 
