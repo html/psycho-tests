@@ -2,7 +2,9 @@
 
 (defview test-result-table-view 
          (:type table)
-         (render-result :reader #'render-result)
+         (render-result 
+           :present-as html
+           :reader #'render-result)
          (owner 
            :label "Responder"
            :reader (lambda (item)

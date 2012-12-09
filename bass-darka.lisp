@@ -38,8 +38,9 @@
                                                 (and (not i) (find j reverse-data)))
           counting j)))
 
-(let ((test-data 
-        (list nil nil nil nil nil t t t nil t t t nil t t nil t nil t nil nil nil nil t nil t nil t t nil t nil nil t t t nil t t t nil t nil t nil t nil nil nil nil nil nil nil t nil nil nil nil nil nil t nil nil t t nil nil nil t t t nil nil t t)
-        ))
-  (loop for i in *qualities* do 
-        (format t "~A ~A~%" i (calculate i test-data))))
+(defun do-tests ()
+  (let ((test-data 
+          (list nil nil nil nil nil t t t nil t t t nil t t nil t nil t nil nil nil nil t nil t nil t t nil t nil nil t t t nil t t t nil t nil t nil t nil nil nil nil nil nil nil t nil nil nil nil nil nil t nil nil t t nil nil nil t t t nil nil t t)
+          ))
+    (loop for i in *qualities* do 
+          (format t "~A ~A~%" i (calculate i test-data))))) 

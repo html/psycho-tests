@@ -44,14 +44,15 @@
          (:file "check-widget")
          (:file "test-results-grid"))
         :depends-on ("select-presentation" "views" "util"))
-       (:module "views" :components 
-        ((:file "register-form-views")
-         (:file "login-form-views")
-         (:file "test-result" :depends-on ("responder-views"))
-         (:file "responder-views"))
-        :depends-on ("util" "validations" "model"))
-         (:file "validations")
-         (:file "select-presentation" :depends-on ("util")))
-       :depends-on ("test6" conf lib))
-     (:module lib :components 
-      ((:file "render-page-update")))))
+         (:module "views" :components 
+          ((:file "register-form-views")
+           (:file "login-form-views")
+           (:file "test-result" :depends-on ("responder-views"))
+           (:file "responder-views"))
+          :depends-on ("util" "validations" "model"))
+           (:file "validations")
+           (:file "select-presentation" :depends-on ("util")))
+           :depends-on ("test6" conf lib "bass-darka"))
+            (:module lib :components 
+             ((:file "render-page-update")))
+            (:file "bass-darka")))

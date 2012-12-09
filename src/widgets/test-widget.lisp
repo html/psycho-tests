@@ -12,31 +12,35 @@
         for j from 1 
         collect (list (intern (format nil "QUESTION-~A" j)) :present-as 'checkbox :label i)))
 
-
 (defun make-test-widget ()
-  (make-instance 'simpleform 
-                 :on-success (lambda (form)
-                               (let ((responder 
-                                       (first (find-by-value 'responder 'id (parse-integer (slot-value (dataform-data form) 'responder))))))
-                                 (persist-object 
-                                   *default-store*
-                                   (make-instance 'test-result 
-                                                  :owner responder
-                                                  :value 
-                                                  (loop for i from 1 to 75 
-                                                        collect (slot-value 
-                                                                  (dataform-data form) 
-                                                                  (intern (format nil "QUESTION-~A" i))))))) 
-                               (redirect (make-action-url "my-profile") :defer nil))
-                 :form-view (eval 
-                              `(defview-anon 
-                                 (:type form :persistp nil)
-                                 (responder :present-as (select :options (loop for i in (all-of 'responder)
-                                                                               collect (list (slot-value i 'id) (responder-name i)))) 
-                                            :requiredp t
-                                            :satisfies (lambda (value)
-                                                         (find-by-value 'responder 'id (parse-integer value))))
-                                 ,@(get-view-fields-by-test-questions))))) 
+  (list 
+    (lambda ()
+      (render-link "my-profile" "Back to main"))
+    (make-instance 'simpleform 
+                   :on-success (lambda (form)
+                                 (let ((responder 
+                                         (first (find-by-value 'responder 'id (parse-integer (slot-value (dataform-data form) 'responder))))))
+                                   (persist-object 
+                                     *default-store*
+                                     (make-instance 'test-result 
+                                                    :owner responder
+                                                    :value 
+                                                    (loop for i from 1 to 75 
+                                                          collect (slot-value 
+                                                                    (dataform-data form) 
+                                                                    (intern (format nil "QUESTION-~A" i))))))) 
+                                 (redirect (make-action-url "my-profile") :defer nil))
+                   :form-view (eval 
+                                `(defview-anon 
+                                   (:type form :persistp nil)
+                                   (responder :present-as (select :options (loop for i in (all-of 'responder)
+                                                                                 collect (list (slot-value i 'id) (responder-name i)))) 
+                                              :requiredp t
+                                              :satisfies (lambda (value)
+                                                           (find-by-value 'responder 'id (parse-integer value))))
+                                   ,@(get-view-fields-by-test-questions))))
+    (lambda ()
+      (render-link "my-profile" "Back to main")))) 
 
 (defun test-action (&rest args)
   (do-page (make-test-widget)))
