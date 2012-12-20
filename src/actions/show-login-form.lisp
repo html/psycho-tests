@@ -10,11 +10,13 @@
       user)))
 
 (defun/cc show-login-form (&rest args)
-  (do-login (lambda (login-widget object) 
-              (if (login-successfull-p 
-                    (slot-value object 'email)
-                    (slot-value object 'password))
-                (redirect (make-action-url "my-profile"))
-                #+l(flash-message *main-page-flash* "You have successfully logged in !")))
-            :view 'login-form-view ))
+  (do-page 
+    (make-instance 'login 
+                   :on-login (lambda (login-widget object) 
+                               (if (login-successfull-p 
+                                     (slot-value object 'email)
+                                     (slot-value object 'password))
+                                 (redirect (make-action-url "my-profile"))
+                                 #+l(flash-message *main-page-flash* "You have successfully logged in !"))) 
+                   :view 'login-form-view) ))
 

@@ -22,14 +22,16 @@
 (defun main-action (&rest args)
   (do-page 
     (lambda (&rest args)
-      (render-link #'show-registration-form  "go to registration form")
-      (with-yaclml 
-        (<:as-is " or "))
-      (render-link #'show-login-form  "go to login form")
       (with-yaclml 
         (<:br)
+        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests by Bass-Darka methodology")
         (<:br)
-        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests by Bass-Darka methodology")))))
+        (<:br)
+        (render-link #'show-registration-form  "go to registration form" :class "btn")
+        (<:as-is " or ") 
+
+        (render-link #'show-login-form  "go to login form" :class "btn")) 
+      )))
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session (comp)
