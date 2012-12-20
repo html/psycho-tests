@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.0.1"
+    :version "0.1.0"
     :maintainer ""
     :author ""
     :licence ""
@@ -52,5 +52,5 @@
           :depends-on ("util" "validations" "model"))
            (:file "validations")
            (:file "select-presentation" :depends-on ("util")))
-           :depends-on ("test6" conf lib "bass-darka"))
+           :depends-on ("test6" conf "bass-darka"))
             (:file "bass-darka")))
