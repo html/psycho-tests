@@ -1,1 +1,0 @@
-../src/arnesi/arnesi.asd

@@ -23,7 +23,7 @@
     :autostart nil                   ;; have to start the app manually
     :ignore-default-dependencies nil ;; accept the defaults
     :debug t
-    )   
+    :subclasses (weblocks-twitter-bootstrap-application:twitter-bootstrap-webapp))   
 
 ;; Top level start & stop scripts
 

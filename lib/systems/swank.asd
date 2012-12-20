@@ -1,1 +1,0 @@
-../src/slime/swank.asd

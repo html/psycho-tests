@@ -10,7 +10,7 @@
     :author ""
     :licence ""
     :description "test6"
-    :depends-on (:weblocks :drakma :cl-smtp :yaclml)
+    :depends-on (:weblocks :drakma :cl-smtp :yaclml :weblocks-twitter-bootstrap-application)
     :components 
     ((:file "test6")
      (:module conf
@@ -53,6 +53,4 @@
            (:file "validations")
            (:file "select-presentation" :depends-on ("util")))
            :depends-on ("test6" conf lib "bass-darka"))
-            (:module lib :components 
-             ((:file "render-page-update")))
             (:file "bass-darka")))

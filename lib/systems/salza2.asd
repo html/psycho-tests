@@ -1,1 +1,0 @@
-../src/salza2-2.0.7/salza2.asd

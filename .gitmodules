@@ -1,0 +1,12 @@
+[submodule "weblocks-jquery"]
+	path = weblocks-jquery
+	url = git://github.com/html/weblocks-jquery.git
+[submodule "jquery-seq"]
+	path = jquery-seq
+	url = git://github.com/html/jquery-seq.git
+[submodule ".quicklisp/local-projects/weblocks-twitter-bootstrap-application"]
+	path = .quicklisp/local-projects/weblocks-twitter-bootstrap-application
+	url = git://github.com/html/weblocks-twitter-bootstrap-application.git
+[submodule "jquery-bbq"]
+	path = jquery-bbq
+	url = git://github.com/cowboy/jquery-bbq.git

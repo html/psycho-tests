@@ -1,0 +1,1 @@
+dists/quicklisp/software/weblocks-20121125-git/weblocks-store-test.asd

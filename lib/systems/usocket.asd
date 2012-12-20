@@ -1,1 +1,0 @@
-../src/usocket-0.4.1/usocket.asd

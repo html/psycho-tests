@@ -1,1 +1,0 @@
-../src/lift/lift-documentation.asd

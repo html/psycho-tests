@@ -1,1 +1,0 @@
-../src/tinaa/tinaa-test.asd

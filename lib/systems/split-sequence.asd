@@ -1,1 +1,0 @@
-../src/split-sequence/split-sequence.asd

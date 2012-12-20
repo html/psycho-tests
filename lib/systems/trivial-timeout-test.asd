@@ -1,1 +1,0 @@
-../src/trivial-timeout/trivial-timeout-test.asd

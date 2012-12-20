@@ -1,4 +1,0 @@
-2006 09 23 
-     
-     * document-system interns system-kind into 'tinaa packag so any symbol should do.
-     * added *css-file* (and memoized the call)

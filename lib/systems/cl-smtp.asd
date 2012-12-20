@@ -1,1 +1,0 @@
-../src/cl-smtp/cl-smtp.asd
