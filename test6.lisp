@@ -21,9 +21,14 @@
     :description "test6: A new application"
     :init-user-session 'test6::init-user-session
     :autostart nil                   ;; have to start the app manually
-    :ignore-default-dependencies nil ;; accept the defaults
+    :ignore-default-dependencies t ;; accept the defaults
     :debug t
-    :subclasses (weblocks-twitter-bootstrap-application:twitter-bootstrap-webapp))   
+    :subclasses (weblocks-twitter-bootstrap-application:twitter-bootstrap-webapp)
+    :dependencies (list 
+                    (make-instance 'stylesheet-dependency :url "/pub/stylesheets/main.css")
+                    (make-instance 'script-dependency :url "/pub/scripts/weblocks-jquery.js")
+                    (make-instance 'script-dependency :url "/pub/scripts/dialog-jquery.js")
+                    (make-instance 'script-dependency :url "/pub/scripts/jquery-seq.js")))   
 
 ;; Top level start & stop scripts
 
