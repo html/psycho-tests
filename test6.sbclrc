@@ -2,6 +2,7 @@
 (require 'asdf)
 (require 'sb-posix)
 (require :sb-aclrepl)
+(setf sb-impl::*default-external-format* :utf-8)
 
 (defvar *project-root* (pathname (nth 1 *posix-argv*)))
 (defvar *port* (parse-integer (nth 2 *posix-argv*)))
