@@ -1,10 +1,16 @@
 (in-package :test6)
 
 (defview responder-table-view (:type table :inherit-from '(:scaffold responder))
-         (time-created :present-as (date :format  "%Y-%m-%d %H:%I")))
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%I"))
+         (group :present-as text 
+                :reader (lambda (item)
+                          (let ((group (responder-first-group item)))
+                            (when group 
+                              (group-name group))))))
 
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden))
+         (time-created :present-as hidden :writer (lambda (item)
+                                                    (declare (ignore item)))))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
   `(lambda (obj)
@@ -37,10 +43,22 @@
   `(lambda (&rest args)
      (loop for i in (all-of ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
 
+(load "src/weblocks-bootstrap-typeahead.lisp")
+
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
          (time-created :present-as hidden)
          (group 
-           :reader (checked-groups-reader 'responder-group 'responder #'responder-group-group)
-           :writer (groups-writer 'group 'responder-group #'responder-group-group :responder :group)
-           :parse-as checkboxes
-           :present-as (checkboxes :choices (groups-to-choices 'group #'group-name))))
+           :reader (lambda (responder)
+                     (and (responder-first-group responder)
+                          (group-name (responder-first-group responder))))
+           :writer (lambda (value item)
+                     (let* ((group (and value 
+                                        (or 
+                                          (first (find-by-values 'group :name value))
+                                          (persist-object *default-store* (make-instance 'group :name value)))))
+                            (old-connections (find-by-values 'responder-group :responder item)))
+                       (mapcar #'destroy old-connections)
+                       (when group
+                         (persist-object *default-store* (make-instance 'responder-group :group group :responder item)))))
+           :present-as (bootstrap-typeahead 
+                         :choices (groups-to-choices 'group #'group-name))))

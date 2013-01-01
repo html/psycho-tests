@@ -129,3 +129,6 @@
   `(let ((*weblocks-output-stream* (make-string-output-stream)))
      ,@body 
      (get-output-stream-string *weblocks-output-stream*)))
+
+(ps:defpsmacro eval-json (json)
+  `(eval (ps:LISP (concatenate 'string "(" ,json ")"))))
