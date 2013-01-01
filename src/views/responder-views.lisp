@@ -1,6 +1,7 @@
 (in-package :test6)
 
-(defview responder-table-view (:type table :inherit-from '(:scaffold responder)))
+(defview responder-table-view (:type table :inherit-from '(:scaffold responder))
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%I")))
 
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder)))
 

@@ -3,7 +3,8 @@
 
 (defclass responder ()
   ((id)
-   (name :initform nil :accessor responder-name :initarg :name)))
+   (name :initform nil :accessor responder-name :initarg :name)
+   (time-created :initform (get-universal-time) :accessor responder-time-created)))
 
 
 (defmethod groups-ids ((obj responder))
