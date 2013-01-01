@@ -3,7 +3,8 @@
 (defview responder-table-view (:type table :inherit-from '(:scaffold responder))
          (time-created :present-as (date :format  "%Y-%m-%d %H:%I")))
 
-(defview new-responder-form-view (:type form :inherit-from '(:scaffold responder)))
+(defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
+         (time-created :present-as hidden))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
   `(lambda (obj)
@@ -37,6 +38,7 @@
      (loop for i in (all-of ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
 
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
+         (time-created :present-as hidden)
          (group 
            :reader (checked-groups-reader 'responder-group 'responder #'responder-group-group)
            :writer (groups-writer 'group 'responder-group #'responder-group-group :responder :group)
