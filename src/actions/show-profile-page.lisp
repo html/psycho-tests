@@ -35,39 +35,55 @@
       (<:div :style "clear:both")) 
     (render-widget responders-grid-widget))) 
 
+(defun make-testing-results-page (&rest args)
+  (make-instance 
+    'composite :widgets
+    (list 
+      (lambda (&rest args)
+        (with-yaclml
+          (<:div :style "float:right"
+                 (<:as-is (render-inline-link *logout-action* "Logout"))) 
+          (<:h1 "Results of testing")
+          (<:as-is (render-inline-link "test" "Add test result"))) 
+        (render-grid-with-group-filter 
+          :title-callback #'testing-name
+          :edit-groups-action #'edit-testings
+          :edit-groups-action-title "Edit testings"
+          :group-class 'testing
+          :grid (make-instance 'test-results-grid 
+                               :data-class 'test-result 
+                               :item-form-view 'test-result-form-view
+                               :view 'test-result-table-view))))))
+
+(defun make-people-tested-page ()
+  (lambda (&rest args)
+    (with-yaclml 
+      (<:div :style "float:right"
+             (<:as-is (render-inline-link *logout-action* "Logout"))) 
+      (<:h1 "People tested"))
+    (render-grid-with-group-filter 
+      :title-callback #'group-name
+      :edit-groups-action #'edit-people-groups
+      :group-class 'group
+      :edit-groups-action-title "Edit groups"
+      :grid (make-instance 'responders-grid 
+                           :data-class 'responder 
+                           :view 'responder-table-view 
+                           :new-item-form-view 'new-responder-form-view
+                           :item-form-view 'responder-form-view))))
+
 (defun show-profile-page (&rest args)
   (require-login nil 
-                 (register-event "show-profile-page")
-                 (do-page 
-                   (list 
-                     (lambda (&rest args)
-                       (with-yaclml
-                         (<:div :style "float:right"
-                                (<:as-is (render-inline-link *logout-action* "Logout"))) 
-                         (<:as-is (render-inline-link "test" "Add test result"))
-                         (<:h1 "Results of testing"))
-                       (render-grid-with-group-filter 
-                         :title-callback #'testing-name
-                         :edit-groups-action #'edit-testings
-                         :edit-groups-action-title "Edit testings"
-                         :group-class 'testing
-                         :grid (make-instance 'test-results-grid 
-                                              :data-class 'test-result 
-                                              :item-form-view 'test-result-form-view
-                                              :view 'test-result-table-view))
-                       (with-yaclml 
-                         (<:h1 "People tested"))
-
-                       (render-grid-with-group-filter 
-                         :title-callback #'group-name
-                         :edit-groups-action #'edit-people-groups
-                         :group-class 'group
-                         :edit-groups-action-title "Edit groups"
-                         :grid (make-instance 'responders-grid 
-                                              :data-class 'responder 
-                                              :view 'responder-table-view 
-                                              :new-item-form-view 'new-responder-form-view
-                                              :item-form-view 'responder-form-view)
-                         ))))))
+    (register-event "show-profile-page")
+    (do-page 
+      (list 
+        (lambda (&rest args)
+          (with-yaclml 
+            (<:br)))
+        (make-navigation 
+          "left-menu" 
+          (list "Testing results" (make-testing-results-page) "testing-results")
+          (list "People tested" (make-people-tested-page) "people-tested")
+          :navigation-class 'main-navigation)))))
 
 

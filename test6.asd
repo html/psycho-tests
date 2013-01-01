@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.1.2"
+    :version "0.2.0"
     :maintainer ""
     :author ""
     :licence ""
@@ -42,7 +42,8 @@
          (:file "test-widget")
          (:file "responders-grid")
          (:file "check-widget")
-         (:file "test-results-grid"))
+         (:file "test-results-grid")
+         (:file "main-navigation"))
         :depends-on ("select-presentation" "views" "util"))
          (:module "views" :components 
           ((:file "register-form-views")
