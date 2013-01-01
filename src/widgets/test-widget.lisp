@@ -12,6 +12,14 @@
         for j from 1 
         collect (list (intern (format nil "QUESTION-~A" j)) :present-as 'checkbox :label i)))
 
+(mustache:defmustache test-view 
+                      (yaclml:with-yaclml-output-to-string 
+                        (<:h1 "Test")
+                        "{{{form-validation-summary}}}"
+                        (<:div 
+                          (<:ul :class "unstyled test-list" "{{{form-body}}}"))
+                        (<:div "{{{form-view-buttons}}}")))
+
 (defun make-test-widget ()
   (list 
     (lambda ()
@@ -32,7 +40,9 @@
                                  (redirect (make-action-url "my-profile") :defer nil))
                    :form-view (eval 
                                 `(defview-anon 
-                                   (:type form :persistp nil)
+                                   (:type mustache-template-form 
+                                    :template #'test-view
+                                    :persistp nil)
                                    (responder :present-as (select :options (loop for i in (all-of 'responder)
                                                                                  collect (list (slot-value i 'id) (responder-name i)))) 
                                               :requiredp t

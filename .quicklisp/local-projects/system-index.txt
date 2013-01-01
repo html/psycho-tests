@@ -1,1 +1,2 @@
+weblocks-mustache-template-form-view/weblocks-mustache-template-form-view.asd
 weblocks-twitter-bootstrap-application/weblocks-twitter-bootstrap-application.asd

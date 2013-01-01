@@ -5,12 +5,12 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.2.0"
+    :version "0.2.1"
     :maintainer ""
     :author ""
     :licence ""
     :description "test6"
-    :depends-on (:weblocks :drakma :cl-smtp :yaclml :weblocks-twitter-bootstrap-application)
+    :depends-on (:weblocks :drakma :cl-smtp :yaclml :weblocks-twitter-bootstrap-application :weblocks-mustache-template-form-view)
     :components 
     ((:file "test6")
      (:module conf
@@ -39,7 +39,7 @@
          (:file "test-result-testing")))
        (:module "widgets" :components 
         ((:file "register-by-email")
-         (:file "test-widget")
+         (:file "test-widget" :depends-on ("main-navigation"))
          (:file "responders-grid")
          (:file "check-widget")
          (:file "test-results-grid")

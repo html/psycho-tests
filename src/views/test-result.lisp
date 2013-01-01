@@ -8,7 +8,7 @@
          (owner 
            :label "Responder"
            :reader (lambda (item)
-                     #+l(responder-name (test-result-owner item))))
+                     (responder-name (test-result-owner item))))
          (time-created :present-as date))
 
 (defview test-result-form-view (:type form :inherit-from '(:scaffold test-result))

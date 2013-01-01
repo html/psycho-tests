@@ -98,8 +98,8 @@ div.maybe-error {
 }
 
 label.checkbox, label.select {
-    height: 21px;
     display: block;
+    clear:both;
 }
 
 .state-checked {
@@ -144,4 +144,9 @@ label.checkbox, label.select {
 
 em.required-slot sup {
     display:none;
+}
+
+.test-list li label {
+  min-height: auto;
+  padding-left: 0;
 }

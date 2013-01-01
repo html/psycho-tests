@@ -3,7 +3,9 @@
         :f-underscore :anaphora 
         :drakma 
         :yaclml
-        :cl-smtp)
+        :cl-smtp 
+        :weblocks-mustache-template-form-view
+        )
   (:import-from :hunchentoot #:header-in
     #:set-cookie #:set-cookie* #:cookie-in
     #:user-agent #:referer)
