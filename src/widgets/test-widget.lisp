@@ -37,6 +37,7 @@
                                                  (make-instance 'test-result 
                                                                 :test-type :bass-darka
                                                                 :owner responder
+                                                                :time-created (get-universal-time)
                                                                 :value 
                                                                 (loop for i from 1 to 75 
                                                                       collect (slot-value 
