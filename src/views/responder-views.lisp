@@ -9,8 +9,7 @@
                               (group-name group))))))
 
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden :writer (lambda (value item)
-                                                    (declare (ignore value item)))))
+         (time-created :present-as hidden :writer #'identity))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
   `(lambda (obj)
@@ -46,9 +45,7 @@
 (load "src/weblocks-bootstrap-typeahead.lisp")
 
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden 
-                       :writer (lambda (value item)
-                                 (declare (ignore value item))))
+         (time-created :present-as hidden :writer #'identity)
          (group 
            :reader (lambda (responder)
                      (and (responder-first-group responder)

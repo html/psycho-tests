@@ -12,7 +12,7 @@
          (time-created :present-as (date :format  "%Y-%m-%d %H:%I")))
 
 (defview test-result-form-view (:type form :inherit-from '(:scaffold test-result))
-         (time-created :present-as hidden)
+         (time-created :present-as hidden :writer #'identity)
          (group 
            :reader (checked-groups-reader 'test-result-testing 'test-result #'test-result-testing-testing)
            :writer (groups-writer 'testing 'test-result-testing #'test-result-testing-testing :test-result :testing)
