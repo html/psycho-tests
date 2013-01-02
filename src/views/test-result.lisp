@@ -11,10 +11,21 @@
                      (responder-name (test-result-owner item))))
          (time-created :present-as (date :format  "%Y-%m-%d %H:%M")))
 
-(defview test-result-form-view (:type form :inherit-from '(:scaffold test-result))
-         (time-created :present-as hidden :writer #'time-created-writer)
-         (group 
-           :reader (checked-groups-reader 'test-result-testing 'test-result #'test-result-testing-testing)
-           :writer (groups-writer 'testing 'test-result-testing #'test-result-testing-testing :test-result :testing)
-           :parse-as checkboxes
-           :present-as (checkboxes :choices (groups-to-choices 'testing #'testing-name))))
+(mustache:defmustache test-result-view 
+                      (yaclml:with-yaclml-output-to-string 
+                        (<:h1 
+                          (<:as-is "{{{form-title}}}"))
+                        (<:as-is "{{{form-validation-summary}}}")
+                        (<:div :class "pull-left"
+                               (<:as-is "{{{form-body}}}")) 
+                        (<:div :class "pull-left" :style "padding-top:5px;"
+                               (<:as-is "{{{form-view-buttons}}}"))))
+
+(defview test-result-form-view (:type mustache-template-form
+                                :template #'test-result-view)
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%M"))
+         (owner :present-as hidden))
+
+(defview test-result-data-view (:type data)
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%M"))
+         (owner :present-as hidden))

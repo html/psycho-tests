@@ -150,3 +150,7 @@ em.required-slot sup {
   min-height: auto;
   padding-left: 0;
 }
+
+.test-result .modify {
+  display: none;
+}

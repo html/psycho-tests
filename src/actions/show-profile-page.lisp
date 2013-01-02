@@ -37,7 +37,10 @@
 
 (defun make-testing-results-page (&rest args)
   (let ((grid (make-instance 'test-results-grid 
+                             :allow-add-p nil
                              :data-class 'test-result 
+                             :drilldown-type :data
+                             :item-data-view 'test-result-data-view
                              :item-form-view 'test-result-form-view
                              :view 'test-result-table-view)))
     (make-instance 
