@@ -132,3 +132,8 @@
 
 (ps:defpsmacro eval-json (json)
   `(eval (ps:LISP (concatenate 'string "(" ,json ")"))))
+
+(defun time-created-writer (value item)
+  (with-slots (time-created) item
+    (unless time-created
+      (setf time-created (get-universal-time)))))

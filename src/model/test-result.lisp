@@ -8,7 +8,7 @@
    (test-type :initform :bass-darka :initarg :test-type)
    (time-created 
      :accessor test-result-time-created 
-     :initform (get-universal-time))))
+     :initform nil)))
 
 (defmethod render-result ((model test-result))
   (render-particular-result model (slot-value model 'test-type)))

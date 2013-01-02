@@ -1,7 +1,7 @@
 (in-package :test6)
 
 (defview responder-table-view (:type table :inherit-from '(:scaffold responder))
-         (time-created :present-as (date :format  "%Y-%m-%d %H:%I"))
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%M"))
          (group :present-as text 
                 :reader (lambda (item)
                           (let ((group (responder-first-group item)))
@@ -9,7 +9,7 @@
                               (group-name group))))))
 
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden :writer #'identity))
+         (time-created :present-as hidden :writer #'time-created-writer))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
   `(lambda (obj)
@@ -45,7 +45,7 @@
 (load "src/weblocks-bootstrap-typeahead.lisp")
 
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden :writer #'identity)
+         (time-created :present-as hidden :writer #'time-created-writer)
          (group 
            :reader (lambda (responder)
                      (and (responder-first-group responder)
