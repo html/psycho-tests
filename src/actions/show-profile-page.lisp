@@ -33,43 +33,49 @@
              (when (and edit-groups-action edit-groups-action-title)
                (<:div :class "outer-badge edit-link"
                     (render-link edit-groups-action edit-groups-action-title))))
-      (<:div :style "clear:both")) 
-    (render-widget responders-grid-widget))) 
+      (<:div :style "clear:both")))) 
 
 (defun make-testing-results-page (&rest args)
-  (make-instance 
-    'composite :widgets
-    (list 
-      (lambda (&rest args)
-        (with-yaclml
-          (<:div :style "float:right"
-                 (<:as-is (render-inline-link *logout-action* "Logout"))) 
-          (<:h1 "Results of testing")
-          (<:as-is (render-inline-link "test" "Add test result"))) 
-        (render-grid-with-group-filter 
-          :title-callback #'testing-name
-          :edit-groups-action #'edit-testings
-          :edit-groups-action-title "Edit testings"
-          :group-class 'testing
-          :grid (make-instance 'test-results-grid 
-                               :data-class 'test-result 
-                               :item-form-view 'test-result-form-view
-                               :view 'test-result-table-view))))))
+  (let ((grid (make-instance 'test-results-grid 
+                             :data-class 'test-result 
+                             :item-form-view 'test-result-form-view
+                             :view 'test-result-table-view)))
+    (make-instance 
+      'composite :widgets
+      (list 
+        (lambda (&rest args)
+          (with-yaclml
+            (<:div :style "float:right"
+                   (<:as-is (render-inline-link *logout-action* "Logout"))) 
+            (<:h1 "Results of testing")
+            (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))) 
+          (render-grid-with-group-filter 
+            :title-callback #'testing-name
+            :edit-groups-action #'edit-testings
+            :edit-groups-action-title "Edit testings"
+            :group-class 'testing
+            :grid grid))
+        grid))))
 
 (defun make-people-tested-page ()
-  (lambda (&rest args)
-    (with-yaclml 
-      (<:div :style "float:right"
-             (<:as-is (render-inline-link *logout-action* "Logout"))) 
-      (<:h1 "People tested"))
-    (render-grid-with-group-filter 
-      :title-callback #'group-name
-      :group-class 'group
-      :grid (make-instance 'responders-grid 
-                           :data-class 'responder 
-                           :view 'responder-table-view 
-                           :new-item-form-view 'new-responder-form-view
-                           :item-form-view 'responder-form-view))))
+  (let ((grid (make-instance 'responders-grid 
+                             :data-class 'responder 
+                             :view 'responder-table-view 
+                             :new-item-form-view 'new-responder-form-view
+                             :item-form-view 'responder-form-view)))
+    (make-instance 
+      'composite :widgets 
+      (list 
+        (lambda (&rest args)
+          (with-yaclml 
+            (<:div :style "float:right"
+                   (<:as-is (render-inline-link *logout-action* "Logout"))) 
+            (<:h1 "People tested"))
+          (render-grid-with-group-filter 
+            :title-callback #'group-name
+            :group-class 'group
+            :grid grid))
+        grid))))
 
 (defun show-profile-page (&rest args)
   (require-login nil 
@@ -81,8 +87,8 @@
             (<:br)))
         (make-navigation 
           "left-menu" 
-          (list "Testing results" (make-testing-results-page) "testing-results")
           (list "People tested" (make-people-tested-page) "people-tested")
+          (list "Testing results" (make-testing-results-page) "testing-results")
           :navigation-class 'main-navigation)))))
 
 

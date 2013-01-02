@@ -21,5 +21,5 @@
 
 (defmethod render-widget-body :before ((widget main-navigation) &rest args)
   (when (string= (request-uri-path) "/")
-    (redirect "/testing-results" :defer nil)))
+    (redirect "/people-tested" :defer nil)))
 

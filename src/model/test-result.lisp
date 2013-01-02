@@ -5,11 +5,15 @@
    (value :initarg :value)
    (cached-result :initform nil)
    (owner :accessor test-result-owner :initform nil :initarg :owner)
+   (test-type :initform :bass-darka :initarg :test-type)
    (time-created 
      :accessor test-result-time-created 
      :initform (get-universal-time))))
 
 (defmethod render-result ((model test-result))
+  (render-particular-result model (slot-value model 'test-type)))
+
+(defmethod render-particular-result ((model test-result) (test-type (eql :bass-darka)))
   (let ((translations 
           (list 
             (cons 'bass-darka-test::physical "Physical agression")

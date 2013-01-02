@@ -29,7 +29,6 @@
     :dependencies (list 
                     (make-instance 'stylesheet-dependency :url "/pub/stylesheets/main.css")
                     (make-instance 'script-dependency :url "/pub/scripts/weblocks-jquery.js")
-                    (make-instance 'script-dependency :url "/pub/scripts/dialog-jquery.js")
                     (make-instance 'script-dependency :url "/pub/scripts/jquery-seq.js")))   
 
 ;; Top level start & stop scripts
