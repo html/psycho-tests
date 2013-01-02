@@ -30,8 +30,9 @@
                                                                    (setf (responders-grid-display-ungroupedp responders-grid-widget) t))
                                                         :unchecked (lambda (&rest args)
                                                                      (setf (responders-grid-display-ungroupedp responders-grid-widget) nil))))))
-             (<:div :class "outer-badge edit-link"
-                    (render-link edit-groups-action edit-groups-action-title)))
+             (when (and edit-groups-action edit-groups-action-title)
+               (<:div :class "outer-badge edit-link"
+                    (render-link edit-groups-action edit-groups-action-title))))
       (<:div :style "clear:both")) 
     (render-widget responders-grid-widget))) 
 
@@ -63,9 +64,7 @@
       (<:h1 "People tested"))
     (render-grid-with-group-filter 
       :title-callback #'group-name
-      :edit-groups-action #'edit-people-groups
       :group-class 'group
-      :edit-groups-action-title "Edit groups"
       :grid (make-instance 'responders-grid 
                            :data-class 'responder 
                            :view 'responder-table-view 

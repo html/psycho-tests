@@ -9,7 +9,7 @@
            :label "Responder"
            :reader (lambda (item)
                      (responder-name (test-result-owner item))))
-         (time-created :present-as date))
+         (time-created :present-as (date :format  "%Y-%m-%d %H:%I")))
 
 (defview test-result-form-view (:type form :inherit-from '(:scaffold test-result))
          (time-created :present-as hidden)

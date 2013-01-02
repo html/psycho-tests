@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.3.2"
+    :version "0.3.3"
     :maintainer ""
     :author ""
     :licence ""
@@ -26,8 +26,7 @@
         ((:file "show-registration-form")
          (:file "show-login-form")
          (:file "show-profile-page")
-         (:file "edit-testings")
-         (:file "edit-groups"))
+         (:file "edit-testings"))
         :depends-on ("util"))
        (:module "model" :components 
         ((:file "user")
