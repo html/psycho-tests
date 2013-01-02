@@ -46,7 +46,8 @@
 (load "src/weblocks-bootstrap-typeahead.lisp")
 
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
-         (time-created :present-as hidden)
+         (time-created :present-as hidden :writer (lambda (item)
+                                                    (declare (ignore item))))
          (group 
            :reader (lambda (responder)
                      (and (responder-first-group responder)
