@@ -72,7 +72,14 @@
                      (let* ((group (and value 
                                         (or 
                                           (first (find-by-values 'group :name value))
-                                          (persist-object *default-store* (make-instance 'group :name value)))))
+                                          ; Ensuring filters correct (with new group)
+                                          (let ((new-group (make-instance 'group :name value)))
+                                            (mark-dirty (root-widget))  
+                                            (prog1 
+                                              (persist-object *default-store* new-group)
+                                              (pushnew (object-id new-group) 
+                                                       (responders-grid-groups-displayed 
+                                                         (first (get-widgets-by-type 'responders-grid)))))))))
                             (old-connections (find-by-values 'responder-group :responder item)))
                        (mapcar #'destroy old-connections)
                        (when group
