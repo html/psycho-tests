@@ -8,7 +8,13 @@
                             (when group 
                               (group-name group))))))
 
+(defvar *name-taken-error*  "This name has already been taken")
+
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
+         (name :satisfies (lambda (value)
+                            (if (find-by-values 'responder :name value)
+                              (values nil *name-taken-error*)
+                              t)))
          (time-created :present-as hidden :writer #'time-created-writer))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
@@ -44,8 +50,20 @@
 
 (load "src/weblocks-bootstrap-typeahead.lisp")
 
+(defvar *record-validating* nil)
+
+(defmethod validate-form-view-field :around (slot-name object field view parsed-value)
+  (let ((*record-validating* object))
+    (call-next-method)))
+
 (defview responder-form-view (:type form :inherit-from '(:scaffold responder))
          (time-created :present-as hidden :writer #'time-created-writer)
+         (name :satisfies (lambda (value)
+                            (declare (special *record-validating*))
+                            (let ((records (remove *record-validating* (find-by-values 'responder :name value))))
+                              (if records 
+                                (values nil *name-taken-error*)
+                                t))))
          (group 
            :reader (lambda (responder)
                      (and (responder-first-group responder)
