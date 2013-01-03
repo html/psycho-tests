@@ -51,7 +51,10 @@
             (<:div :style "float:right"
                    (<:as-is (render-inline-link *logout-action* "Logout"))) 
             (<:h1 "Results of testing")
-            (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))
+            (if (weblocks-utils:first-of 'responder)
+              (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))
+              (<:div :class "alert"
+                     "Please add some people to database to begin testings"))
             (<:div :class "clearfix")
             (<:br)))
         grid))))

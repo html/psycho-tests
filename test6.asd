@@ -5,12 +5,12 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.3.8"
+    :version "0.3.9"
     :maintainer ""
     :author ""
     :licence ""
     :description "test6"
-    :depends-on (:weblocks :drakma :cl-smtp :yaclml :weblocks-twitter-bootstrap-application :weblocks-mustache-template-form-view)
+    :depends-on (:weblocks :drakma :cl-smtp :yaclml :weblocks-twitter-bootstrap-application :weblocks-mustache-template-form-view :weblocks-utils)
     :components 
     ((:file "test6")
      (:module conf
