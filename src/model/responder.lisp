@@ -13,3 +13,7 @@
 (defmethod responder-first-group ((obj responder))
   (let ((r-group (first (find-by-value 'responder-group 'responder obj))))
     (and r-group (responder-group-group r-group))))
+
+(defmethod delete-persistent-object :before (store (obj responder))
+  (mapcar #'destroy (find-by-values 'test-result :owner obj))
+  (mapcar #'destroy (find-by-values 'responder-group :responder obj)))
