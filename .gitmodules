@@ -28,3 +28,6 @@
 [submodule ".quicklisp/local-projects/weblocks-utils"]
 	path = .quicklisp/local-projects/weblocks-utils
 	url = git://github.com/html/weblocks-utils.git
+[submodule "gists/4444927"]
+	path = gists/4444927
+	url = git://gist.github.com/4444927.git

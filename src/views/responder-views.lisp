@@ -1,6 +1,10 @@
 (in-package :test6)
 
-(defview responder-table-view (:type table :inherit-from '(:scaffold responder))
+(load "src/weblocks-table-view-with-ordered-fields.lisp")
+
+(defview responder-table-view (:type advanced-table :inherit-from '(:scaffold responder)
+                               :fields-order '(:id :name :group :time-created))
+         (id :label "#" :order-weight 10)
          (time-created :present-as (date :format  "%Y-%m-%d %H:%M"))
          (group :present-as text 
                 :reader (lambda (item)

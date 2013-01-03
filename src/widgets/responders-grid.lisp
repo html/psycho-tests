@@ -32,7 +32,7 @@
   `(lambda (grid sort some  &rest args &key countp) 
      (let* ((display-ungrouped-p (responders-grid-display-ungroupedp grid))
             (groups-displayed (responders-grid-groups-displayed grid))
-            (items (find-by-predicate 
+            (items (weblocks-utils:find-by 
                      (dataseq-data-class grid)
                      (lambda (item)
                        (defun any-group-matches (groups1 groups2)
@@ -52,7 +52,8 @@
                              (any-group-matches 
                                (mapcar #'write-to-string groups-displayed) 
                                (mapcar #'write-to-string groups-ids)))
-                           display-ungrouped-p)))))) 
+                           display-ungrouped-p)))
+                     :order-by sort))) 
        (if countp 
          (length items)
          items))))
