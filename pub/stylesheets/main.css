@@ -154,3 +154,23 @@ em.required-slot sup {
 .test-result .modify {
   display: none;
 }
+
+.test-list label.control-label {
+  width: 70%;
+  float:left;
+  clear:left;
+  margin-right: 20px;
+  border-bottom: 2px solid #dddddd;
+}
+.test-list label.select {
+  width: 40%;
+}
+
+.test-list .control-group {
+  clear: both;
+}
+
+.test-list .responder .controls {
+  float: right;
+  margin-right: 25%;
+}
