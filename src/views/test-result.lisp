@@ -9,6 +9,10 @@
            :label "Responder"
            :reader (lambda (item)
                      (responder-name (test-result-owner item))))
+         (owner-group 
+           :label "Responder group"
+           :reader (lambda (item)
+                     (responder-group-name (test-result-owner item))))
          (time-created :present-as (date :format  "%Y-%m-%d %H:%M")))
 
 (mustache:defmustache test-result-view 

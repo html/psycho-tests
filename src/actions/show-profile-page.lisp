@@ -51,13 +51,9 @@
             (<:div :style "float:right"
                    (<:as-is (render-inline-link *logout-action* "Logout"))) 
             (<:h1 "Results of testing")
-            (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))) 
-          (render-grid-with-group-filter 
-            :title-callback #'testing-name
-            :edit-groups-action #'edit-testings
-            :edit-groups-action-title "Edit testings"
-            :group-class 'testing
-            :grid grid))
+            (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))
+            (<:div :class "clearfix")
+            (<:br)))
         grid))))
 
 (defun make-people-tested-page ()
