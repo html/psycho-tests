@@ -64,7 +64,8 @@
                      :accessor responders-grid-groups-displayed)
    (display-ungroupedp :initarg :display-ungrouped-p :initform t :accessor responders-grid-display-ungroupedp))
   (:default-initargs 
-   :on-query (groups-filter)))
+   :on-query (groups-filter)
+   :sort (cons 'time-created :desc)))
 
 (defwidget responders-grid-dataform (dataform)
   ())
