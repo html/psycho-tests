@@ -6,10 +6,12 @@
            :present-as html
            :reader #'render-result)
          (owner 
+           :allow-sorting-p t
            :label "Responder"
            :reader (lambda (item)
                      (responder-name (test-result-owner item))))
          (owner-group 
+           :allow-sorting-p t
            :label "Responder group"
            :reader (lambda (item)
                      (responder-group-name (test-result-owner item))))

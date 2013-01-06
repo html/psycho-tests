@@ -56,7 +56,20 @@
                      :order-by sort))) 
        (if countp 
          (length items)
-         items))))
+         (progn 
+           (when (and 
+                   (subtypep (class-of grid) 'test-results-grid)
+                   (or (equal (car sort) 'owner-group)
+                       (equal (car sort) 'owner)))
+             (setf items (sort items (if (equal (cdr sort) :asc) #'string< #'string>) 
+                               :key (lambda (item)
+                                      (or 
+                                        (if (equal (car sort) 'owner-group)
+                                          (responder-group-name (test-result-owner item))
+                                          (responder-name (test-result-owner item)))
+                                        ""
+                                        )))))
+           items)))))
 
 (defwidget responders-grid (grid-separated-form-views)
   ((groups-displayed :initarg :groups-displayed 
