@@ -43,6 +43,7 @@
                                                                       collect (slot-value 
                                                                                 (dataform-data form) 
                                                                                 (intern (format nil "QUESTION-~A" i))))))) 
+                                             (setf (dataform-ui-state form) :form)
                                              (redirect (make-action-url "my-profile") :defer nil))
                                :form-view (eval 
                                             `(defview-anon 

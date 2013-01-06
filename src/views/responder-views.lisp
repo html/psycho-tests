@@ -1,3 +1,36 @@
+(in-package :weblocks)
+
+(defmethod render-form-view-buttons :around ((view form-view) obj widget &rest args &key form-view-buttons &allow-other-keys)
+  (declare (ignore obj args))
+
+  ;(return-normal-value-when-theme-not-used render-form-view-buttons)
+
+  (flet ((find-button (name)
+           (arnesi:ensure-list
+             (if form-view-buttons
+               (find name form-view-buttons
+                     :key (lambda (item)
+                            (car (arnesi:ensure-list item))))
+               (find name (form-view-buttons view)
+                     :key (lambda (item)
+                            (car (arnesi:ensure-list item))))))))
+    (with-html
+      (:div :class "submit control-group"
+        (:div :class "controls"
+         (loop for i in (form-view-buttons view) do 
+               (let* ((button-key (car (arnesi:ensure-list i)))
+                      (button-label (if (listp i) (cdr i) (humanize-name button-key))))
+                 (render-button 
+                   (cond 
+                     ((equal button-key :submit) *submit-control-name*)
+                     ((equal button-key :cancel) *cancel-control-name*)
+                     (t button-key)) 
+                   :class (cond 
+                            ((equal button-key :submit) "submit btn btn-primary")
+                            ((equal button-key :cancel) "btn submit cancel")
+                            (t "btn submit"))
+                   :value button-label))))))))
+
 (in-package :test6)
 
 (load "src/weblocks-table-view-with-ordered-fields.lisp")
@@ -14,7 +47,8 @@
 
 (defvar *name-taken-error*  "This name has already been taken")
 
-(defview new-responder-form-view (:type form :inherit-from '(:scaffold responder))
+(defview new-responder-form-view (:type form :inherit-from '(:scaffold responder) 
+                                        :buttons '((:submit . "Save") (:save-data . "Save and start test" ) :cancel))
          (name :satisfies (lambda (value)
                             (if (find-by-values 'responder :name value)
                               (values nil *name-taken-error*)
