@@ -14,6 +14,25 @@
 (defmethod render-result ((model test-result))
   (render-particular-result model (slot-value model 'test-type)))
 
+(defmethod render-particular-result ((model test-result) (test-type (eql :conflict-style)))
+  (yaclml:with-yaclml-output-to-string 
+    (<:b "Стиль поведінки у конфлікті") (<:hr)
+    (loop for i in (list 
+                     "Черепаха (ухиляння)"
+                     "Акула (суперництво)"
+                     "Плюшевий ведмедик (пристосування)"
+                     "Лисиця (компроміс)"
+                     "Сова (співробітництво)")
+          for j from 0 do
+            (<:span 
+              (<:as-is i)
+              " - "
+              (<:as-is (loop for k from j to 35 by 5 sum (or 
+                                                           (nth k (slot-value model 'value))
+                                                           0
+                                                           )))
+              (<:br)))))
+
 (defmethod render-particular-result ((model test-result) (test-type (eql :bass-darka)))
   (let ((translations 
           (list 
@@ -38,9 +57,13 @@
         (clean-result (mapcar #'not (mapcar #'null (slot-value model 'value)))))
     (format nil "~A ~A"
             (yaclml:with-yaclml-output-to-string
+              (<:b "Тест Басса Дарки")
+              (<:hr)
               (loop for i in bass-darka-test::*qualities* do 
+                    (<:as-is (format nil "~A ~A" (cdr (assoc i translations-ua)) (bass-darka-test::calculate i (mapcar #'not (mapcar #'null (slot-value model 'value))))))
                     (<:br)
-                    (<:as-is (format nil "~A ~A" (cdr (assoc i translations-ua)) (bass-darka-test::calculate i (mapcar #'not (mapcar #'null (slot-value model 'value)))))))) 
+                    
+                    )) 
             (yaclml:with-yaclml-output-to-string 
               (<:hr)
               (<:div 

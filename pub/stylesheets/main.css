@@ -155,13 +155,24 @@ em.required-slot sup {
   display: none;
 }
 
-.test-list label.control-label {
+.bass-darka label.control-label {
+  border-bottom: 2px solid #dddddd;
   width: 70%;
   float:left;
   clear:left;
   margin-right: 20px;
-  border-bottom: 2px solid #dddddd;
 }
+
+.conflict-style .control-group {
+  border-bottom: 2px solid #dddddd;
+  padding-bottom: 10px;
+}
+
+.responder.control-group, .submit.control-group {
+  border-bottom: 0;
+}
+
+
 .test-list label.select {
   width: 40%;
 }
