@@ -79,6 +79,7 @@
                                   (list ,@(loop for i from 5 downto 1 for j in choices 
                                                 collect `(cons ,j ,i)))) 
                     :requiredp t
+                    :required-indicator nil
                     :label ,i))))
 
 (mustache:defmustache test-view 
@@ -99,8 +100,8 @@
   (loop for i from 1 to 35 
         collect (parse-integer 
                   (slot-value 
-                    data
-                    (intern (format nil "QUESTION-~A" i))))))
+                  data
+                  (intern (format nil "QUESTION-~A" i))))))
 
 (defun/cc test-action (&rest args)
           (let ((choice (do-choice "Please choose test type" (list :bass-darka 
