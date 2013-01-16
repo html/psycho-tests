@@ -103,44 +103,60 @@
                   data
                   (intern (format nil "QUESTION-~A" i))))))
 
-(defun/cc test-action (&rest args)
-          (let ((choice (do-choice "Please choose test type" (list :bass-darka 
-                                                                   :conflict-style 
-                                                                   ) :css-class "modal fade in")))
-            (do-page 
-              (list 
-                (lambda ()
-                  (render-link "my-profile" "Back to main"))
-                (make-instance 'simpleform 
-                               :on-success (lambda (form)
-                                             (let ((responder 
-                                                     (first (find-by-value 'responder 'id (parse-integer (slot-value (dataform-data form) 'responder))))))
-                                               (persist-object 
-                                                 *default-store*
-                                                 (make-instance 'test-result 
-                                                                :test-type choice
-                                                                :owner responder
-                                                                :time-created (get-universal-time)
-                                                                :value (funcall 
-                                                                         (if (equal choice :bass-darka)
-                                                                           #'dataform-data-to-value-for-bass-darka-test 
-                                                                           #'dataform-data-to-value-for-conflict-style-test) 
-                                                                         (dataform-data form))))) 
-                                             (setf (dataform-ui-state form) :form)
-                                             (redirect (make-action-url "my-profile") :defer nil))
-                               :dom-class (string-downcase choice)
-                               :form-view (eval 
-                                            `(defview-anon 
-                                               (:type mustache-template-form 
-                                                :template #'test-view
-                                                :persistp nil)
-                                               (responder :present-as (select :options (loop for i in (all-of 'responder)
-                                                                                             collect (list (slot-value i 'id) (responder-name i)))) 
-                                                          :requiredp t
-                                                          :satisfies (lambda (value)
-                                                                       (find-by-value 'responder 'id (parse-integer value))))
-                                               ,@(if (equal choice :bass-darka)
-                                                   (get-view-fields-by-test-questions)
-                                                   (get-view-fields-for-conflict-test)))))
-                (lambda ()
-                  (render-link "my-profile" "Back to main"))))))
+(defun nav-root-widget ()
+  (first (widget-children (get-widget-by-id "add-test-nav"))))
+
+(defun/cc do-choice-without-modal (msg choices &key (method :post) (css-class "") (title "Select Option"))
+          (let* ((pane (nav-root-widget)))
+            (do-widget 
+              pane
+              (make-widget
+                (metatilities:curry (ecase method
+                                      (:get #'weblocks::render-choices-get)
+                                      (:post #'weblocks::render-choices-post))
+                                    msg choices)))))
+
+(defun make-add-test-form (choice)
+  (make-instance 
+    'simpleform 
+    :on-success (lambda (form)
+                  (let ((responder 
+                          (first (find-by-value 'responder 'id (parse-integer (slot-value (dataform-data form) 'responder))))))
+                    (persist-object 
+                      *default-store*
+                      (make-instance 'test-result 
+                                     :test-type choice
+                                     :owner responder
+                                     :time-created (get-universal-time)
+                                     :value (funcall 
+                                              (if (equal choice :bass-darka)
+                                                #'dataform-data-to-value-for-bass-darka-test 
+                                                #'dataform-data-to-value-for-conflict-style-test) 
+                                              (dataform-data form))))) 
+                  (setf (dataform-ui-state form) :form)
+                  (answer #'test-action t)
+                  (redirect "/testing-results"))
+    :on-cancel (lambda (form)
+                 (answer #'test-action nil)
+                 (redirect "/testing-results")
+                 (throw 'annihilate-dataform nil))
+    :dom-class (string-downcase choice)
+    :form-view (eval 
+                 `(defview-anon 
+                    (:type mustache-template-form 
+                     :template #'test-view
+                     :persistp nil)
+                    (responder :present-as (select :options (loop for i in (all-of 'responder)
+                                                                  collect (list (slot-value i 'id) (responder-name i)))) 
+                               :requiredp t
+                               :satisfies (lambda (value)
+                                            (find-by-value 'responder 'id (parse-integer value))))
+                    ,@(if (equal choice :bass-darka)
+                        (get-view-fields-by-test-questions)
+                        (get-view-fields-for-conflict-test))))))
+
+(defun/cc test-action  (&rest args)
+  (let ((choice (do-choice-without-modal "Please choose test type" (list :bass-darka 
+                                                             :conflict-style 
+                                                             ) :css-class "modal fade in")))
+    (do-widget (nav-root-widget) (make-add-test-form choice))))

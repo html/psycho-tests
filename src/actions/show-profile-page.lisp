@@ -35,6 +35,12 @@
                     (render-link edit-groups-action edit-groups-action-title))))
       (<:div :style "clear:both")))) 
 
+(defwidget testing-results-navigation (navigation)
+           ())
+
+(defmethod render-widget-body ((widget testing-results-navigation) &rest args)
+  (declare (ignore args)))
+
 (defun make-testing-results-page (&rest args)
   (let ((grid (make-instance 'test-results-grid 
                              :allow-add-p nil
@@ -43,21 +49,32 @@
                              :item-data-view 'test-result-data-view
                              :item-form-view 'test-result-form-view
                              :view 'test-result-table-view)))
-    (make-instance 
-      'composite :widgets
-      (list 
-        (lambda (&rest args)
-          (with-yaclml
-            (<:div :style "float:right"
-                   (<:as-is (render-inline-link *logout-action* "Logout"))) 
-            (<:h1 "Results of testing")
-            (if (weblocks-utils:first-of 'responder)
-              (<:as-is (render-inline-link "test" "<i class=\"icon-plus-sign icon-white\"></i>&nbsp;Add test result" :class "btn btn-primary"))
-              (<:div :class "alert"
-                     "Please add some people to database to begin testings"))
-            (<:div :class "clearfix")
-            (<:br)))
-        grid))))
+    (make-navigation "add-test-nav"
+                     (list "!!"  
+                           (make-instance 
+                             'composite :widgets
+                             (list 
+                               (lambda (&rest args)
+                                 (with-yaclml
+                                   (<:div :style "float:right"
+                                          (<:as-is (render-inline-link *logout-action* "Logout"))) 
+                                   (<:h1 "Results of testing")
+                                   (if (weblocks-utils:first-of 'responder)
+                                     (<:a :href "/testing-results/do-test" :class "btn btn-primary"
+                                          (<:i :class "icon-plus-sign icon-white")
+                                          (<:as-is "&nbsp;Add test result"))
+                                     (<:div :class "alert"
+                                            "Please add some people to database to begin testings"))
+                                   (<:div :class "clearfix")
+                                   (<:br)))
+                               grid))
+                           nil)
+                     (list 
+                       "Do test"
+                       (make-instance 'funcall-widget 
+                                      :fun-designator #'test-action)
+                       "do-test")
+                     :navigation-class 'testing-results-navigation)))
 
 (defun make-people-tested-page ()
   (let ((grid (make-instance 'responders-grid 

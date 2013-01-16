@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.3.9"
+    :version "0.3.10"
     :maintainer ""
     :author ""
     :licence ""

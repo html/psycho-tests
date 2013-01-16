@@ -90,9 +90,6 @@
 (defun dbg (&rest args)
   (error (format nil "~{~A~%~}" args)))
 
-(defun all-of (cls)
-  (find-persistent-objects *default-store* cls))
-
 (defun destroy (obj)
   (delete-persistent-object *default-store* obj))
 
@@ -137,3 +134,11 @@
   (with-slots (time-created) item
     (unless time-created
       (setf time-created (get-universal-time)))))
+
+(defun fb-widgets-tree ()
+  (firephp:fb 
+    (with-output-to-string (s)
+      (walk-widget-tree (root-widget)
+                        (lambda (w d)
+                          (loop repeat d do (format s " "))
+                          (format s "~S~%" w))))))

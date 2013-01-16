@@ -5,7 +5,7 @@
         :yaclml
         :cl-smtp 
         :weblocks-mustache-template-form-view
-        )
+        :weblocks-utils)
   (:import-from :hunchentoot #:header-in
     #:set-cookie #:set-cookie* #:cookie-in
     #:user-agent #:referer)
