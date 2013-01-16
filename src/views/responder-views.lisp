@@ -43,7 +43,8 @@
                 :reader (lambda (item)
                           (let ((group (responder-first-group item)))
                             (when group 
-                              (group-name group))))))
+                              (group-name group))))
+                :allow-sorting-p t))
 
 (defvar *name-taken-error*  "This name has already been taken")
 

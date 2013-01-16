@@ -58,17 +58,17 @@
          (length items)
          (progn 
            (when (and 
-                   (subtypep (class-of grid) 'test-results-grid)
+                   (subtypep (class-of grid) 'responders-grid)
                    (or (equal (car sort) 'owner-group)
-                       (equal (car sort) 'owner)))
+                       (equal (car sort) 'owner)
+                       (equal (car sort) 'group)))
              (setf items (sort items (if (equal (cdr sort) :asc) #'string< #'string>) 
                                :key (lambda (item)
-                                      (or 
-                                        (if (equal (car sort) 'owner-group)
-                                          (responder-group-name (test-result-owner item))
-                                          (responder-name (test-result-owner item)))
-                                        ""
-                                        )))))
+                                      (cond 
+                                        ((equal (car sort) 'owner-group) (responder-group-name (test-result-owner item)))
+                                        ((equal (car sort) 'group) (responder-group-name item))
+                                        ((equal (car sort) 'owner) (responder-name (test-result-owner item)))
+                                        (t ""))))))
            items)))))
 
 (defwidget responders-grid (grid-separated-form-views)
