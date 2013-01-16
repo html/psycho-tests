@@ -1,7 +1,7 @@
 (in-package :test6)
 
 
-(defun render-grid-with-group-filter (&key grid group-class edit-groups-action edit-groups-action-title title-callback)
+(defun render-grid-with-group-filter (&key grid group-class edit-groups-url edit-groups-action-title title-callback)
   (let ((responders-grid-widget grid))
     (with-yaclml
       (<:div :class "badges"
@@ -30,16 +30,10 @@
                                                                    (setf (responders-grid-display-ungroupedp responders-grid-widget) t))
                                                         :unchecked (lambda (&rest args)
                                                                      (setf (responders-grid-display-ungroupedp responders-grid-widget) nil))))))
-             (when (and edit-groups-action edit-groups-action-title)
+             (when (and edit-groups-url edit-groups-action-title)
                (<:div :class "outer-badge edit-link"
-                    (render-link edit-groups-action edit-groups-action-title))))
+                    (<:a :href edit-groups-url (<:as-is edit-groups-action-title)))))
       (<:div :style "clear:both")))) 
-
-(defwidget testing-results-navigation (navigation)
-           ())
-
-(defmethod render-widget-body ((widget testing-results-navigation) &rest args)
-  (declare (ignore args)))
 
 (defun make-testing-results-page (&rest args)
   (let ((grid (make-instance 'test-results-grid 
@@ -74,7 +68,7 @@
                        (make-instance 'funcall-widget 
                                       :fun-designator #'test-action)
                        "do-test")
-                     :navigation-class 'testing-results-navigation)))
+                     :navigation-class 'invisible-navigation)))
 
 (defun make-people-tested-page ()
   (let ((grid (make-instance 'responders-grid 
@@ -82,19 +76,26 @@
                              :view 'responder-table-view 
                              :new-item-form-view 'new-responder-form-view
                              :item-form-view 'responder-form-view)))
-    (make-instance 
-      'composite :widgets 
-      (list 
-        (lambda (&rest args)
-          (with-yaclml 
-            (<:div :style "float:right"
-                   (<:as-is (render-inline-link *logout-action* "Logout"))) 
-            (<:h1 "People tested"))
-          (render-grid-with-group-filter 
-            :title-callback #'group-name
-            :group-class 'group
-            :grid grid))
-        grid))))
+    (make-navigation 
+      "people-tested-inner"
+      (list "!!"
+            (make-instance 
+              'composite :widgets 
+              (list 
+                (lambda (&rest args)
+                  (with-yaclml 
+                    (<:div :style "float:right"
+                           (<:as-is (render-inline-link *logout-action* "Logout"))) 
+                    (<:h1 "People tested"))
+                  (render-grid-with-group-filter 
+                    :edit-groups-action-title "Edit groups"
+                    :edit-groups-url "/people-tested/edit-groups"
+                    :title-callback #'group-name
+                    :group-class 'group
+                    :grid grid))
+                grid)) nil)
+      (list "Edit groups" #'edit-people-groups "edit-groups")
+      :navigation-class 'invisible-navigation)))
 
 (defun show-profile-page (&rest args)
   (require-login nil 

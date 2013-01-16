@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.3.10"
+    :version "0.3.11"
     :maintainer ""
     :author ""
     :licence ""
@@ -26,7 +26,7 @@
         ((:file "show-registration-form")
          (:file "show-login-form")
          (:file "show-profile-page")
-         (:file "edit-testings"))
+         (:file "edit-groups"))
         :depends-on ("util"))
        (:module "model" :components 
         ((:file "user")
@@ -42,7 +42,8 @@
          (:file "responders-grid")
          (:file "check-widget")
          (:file "test-results-grid")
-         (:file "main-navigation"))
+         (:file "main-navigation")
+         (:file "invisible-navigation"))
         :depends-on ("select-presentation" "views" "util"))
          (:module "views" :components 
           ((:file "register-form-views")

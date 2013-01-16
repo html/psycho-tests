@@ -15,9 +15,9 @@
                      (first  (find-persistent-objects *default-store* 'user)) t))))))
 
 (defun/cc logout-action (&rest args)
-  (register-event "logged-out" :user (object->simple-plist (current-user)))
-  (logout)
-  (redirect (make-action-url "main")))
+          (register-event "logged-out" :user (object->simple-plist (current-user)))
+          (logout)
+          (redirect "/?action=main"))
 
 (defun main-action (&rest args)
   (do-page 
