@@ -17,21 +17,25 @@
 (defmethod render-particular-result ((model test-result) (test-type (eql :conflict-style)))
   (yaclml:with-yaclml-output-to-string 
     (<:b "Стиль поведінки у конфлікті") (<:hr)
-    (loop for i in (list 
-                     "Черепаха (ухиляння)"
-                     "Акула (суперництво)"
-                     "Плюшевий ведмедик (пристосування)"
-                     "Лисиця (компроміс)"
-                     "Сова (співробітництво)")
-          for j from 0 do
-            (<:span 
+    (let* ((points-groups-names (list 
+                                  "Черепаха (ухиляння)"
+                                  "Акула (суперництво)"
+                                  "Плюшевий ведмедик (пристосування)"
+                                  "Лисиця (компроміс)"
+                                  "Сова (співробітництво)"))
+           (points (loop for j from 0 to 4 collect 
+                         (loop for k from j to 35 by 5 sum (or 
+                                                             (nth k (slot-value model 'value))
+                                                             0))))
+           (max-points-number (apply #'max points)))
+      (loop for i in points-groups-names
+            for j in points do
+            (<:span :style (when (= j max-points-number)
+                             "font-weight:bold;color:red;")
               (<:as-is i)
               " - "
-              (<:as-is (loop for k from j to 35 by 5 sum (or 
-                                                           (nth k (slot-value model 'value))
-                                                           0
-                                                           )))
-              (<:br)))))
+              (<:as-is j)
+              (<:br))))))
 
 (defmethod render-particular-result ((model test-result) (test-type (eql :bass-darka)))
   (let ((translations 
