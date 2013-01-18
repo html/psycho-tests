@@ -43,6 +43,7 @@
                              :item-data-view 'test-result-data-view
                              :item-form-view 'test-result-form-view
                              :view 'test-result-table-view)))
+    (setf (pagination-items-per-page (dataseq-pagination-widget grid)) 5)
     (make-navigation "add-test-nav"
                      (list "!!"  
                            (make-instance 
