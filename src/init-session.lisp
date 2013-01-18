@@ -24,7 +24,7 @@
     (lambda (&rest args)
       (with-yaclml 
         (<:br)
-        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests by Bass-Darka methodology")
+        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests")
         (<:br)
         (<:br)
         (render-link #'show-registration-form  "go to registration form" :class "btn")
