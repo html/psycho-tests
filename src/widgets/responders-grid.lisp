@@ -53,6 +53,7 @@
                                (mapcar #'write-to-string groups-displayed) 
                                (mapcar #'write-to-string groups-ids)))
                            display-ungrouped-p)))
+                     :range some
                      :order-by sort))) 
        (if countp 
          (length items)
