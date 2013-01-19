@@ -5,7 +5,7 @@
          (user-password-hash (if user (password-hash user)))
          (hash-of-submitted-password password))
     (when (and user-password-hash (string-equal user-password-hash hash-of-submitted-password)) 
-      (setf (%current-user) user)
+      (setf (webapp-session-value *authentication-key*) user)
       (register-event "logged-in" :user (object->simple-plist user))
       user)))
 
@@ -16,7 +16,7 @@
                                (if (login-successfull-p 
                                      (slot-value object 'email)
                                      (slot-value object 'password))
-                                 (redirect (make-action-url "my-profile"))
-                                 #+l(flash-message *main-page-flash* "You have successfully logged in !"))) 
+                                 (redirect (make-action-url "my-profile"))) 
+                               (current-user)) 
                    :view 'login-form-view) ))
 
