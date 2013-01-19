@@ -33,6 +33,33 @@
 
 (in-package :test6)
 
+(load "src/weblocks-bootstrap-typeahead.lisp")
+
+(defmacro groups-to-choices (group-class name-accessor)
+  `(lambda (&rest args)
+     (loop for i in (all-of ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
+
+(defun responder-group-writer (value item)
+  (let* ((group (and value 
+                     (or 
+                       (first (find-by-values 'group :name value))
+                       ; Ensuring filters correct (with new group)
+                       (let ((new-group (make-instance 'group :name value)))
+                         (mark-dirty (root-widget))  
+                         (prog1 
+                           (persist-object *default-store* new-group)
+                           (pushnew (object-id new-group) 
+                                    (responders-grid-groups-displayed 
+                                      (first (get-widgets-by-type 'responders-grid)))))))))
+         (old-connections (find-by-values 'responder-group :responder item)))
+    (mapcar #'destroy old-connections)
+    (when group
+      (persist-object *default-store* (make-instance 'responder-group :group group :responder item)))))
+
+(defun responder-group-reader (responder)
+  (and (responder-first-group responder)
+       (group-name (responder-first-group responder))))
+
 (load "src/weblocks-table-view-with-ordered-fields.lisp")
 
 (defview responder-table-view (:type advanced-table :inherit-from '(:scaffold responder)
@@ -54,6 +81,11 @@
                             (if (find-by-values 'responder :name value)
                               (values nil *name-taken-error*)
                               t)))
+         (group 
+           :reader #'responder-group-reader
+           :writer #'responder-group-writer
+           :present-as (bootstrap-typeahead 
+                         :choices (groups-to-choices 'group #'group-name)))
          (time-created :present-as hidden :writer #'time-created-writer))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
@@ -83,12 +115,6 @@
                  :test #'string=)
                (destroy i))))))
 
-(defmacro groups-to-choices (group-class name-accessor)
-  `(lambda (&rest args)
-     (loop for i in (all-of ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
-
-(load "src/weblocks-bootstrap-typeahead.lisp")
-
 (defvar *record-validating* nil)
 
 (defmethod validate-form-view-field :around (slot-name object field view parsed-value)
@@ -104,24 +130,7 @@
                                 (values nil *name-taken-error*)
                                 t))))
          (group 
-           :reader (lambda (responder)
-                     (and (responder-first-group responder)
-                          (group-name (responder-first-group responder))))
-           :writer (lambda (value item)
-                     (let* ((group (and value 
-                                        (or 
-                                          (first (find-by-values 'group :name value))
-                                          ; Ensuring filters correct (with new group)
-                                          (let ((new-group (make-instance 'group :name value)))
-                                            (mark-dirty (root-widget))  
-                                            (prog1 
-                                              (persist-object *default-store* new-group)
-                                              (pushnew (object-id new-group) 
-                                                       (responders-grid-groups-displayed 
-                                                         (first (get-widgets-by-type 'responders-grid)))))))))
-                            (old-connections (find-by-values 'responder-group :responder item)))
-                       (mapcar #'destroy old-connections)
-                       (when group
-                         (persist-object *default-store* (make-instance 'responder-group :group group :responder item)))))
+           :reader #'responder-group-reader
+           :writer #'responder-group-writer
            :present-as (bootstrap-typeahead 
                          :choices (groups-to-choices 'group #'group-name))))
