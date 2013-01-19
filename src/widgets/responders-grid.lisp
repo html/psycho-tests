@@ -112,7 +112,7 @@
                                            (setf (slot-value obj 'weblocks::intermediate-form-values) nil)
                                            (setf (dataform-ui-state obj) :data))))
                                 (when save-data 
-                                  (test-action))))
+                                  (redirect "/testing-results/do-test"))))
          :validation-errors (slot-value obj 'weblocks::validation-errors)
          :intermediate-values (slot-value obj 'weblocks::intermediate-form-values)
          :widget obj
