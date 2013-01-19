@@ -84,4 +84,4 @@
                 ))))) 
 
 (defmethod groups-ids ((obj test-result))
-  (mapcar #'object-id (mapcar #'test-result-testing-test-result (find-by-value 'test-result-testing 'test-result obj))))
+  (declare (ignore obj)))

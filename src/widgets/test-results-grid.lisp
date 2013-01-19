@@ -2,5 +2,5 @@
 
 (defwidget test-results-grid (responders-grid)
   ((groups-displayed :initarg :groups-displayed 
-                     :initform (mapcar #'object-id (all-of 'testing))
+                     :initform nil
                      :accessor responders-grid-groups-displayed)))

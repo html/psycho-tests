@@ -5,7 +5,7 @@
 
 (defsystem test6
     :name "test6"
-    :version "0.3.13"
+    :version "0.3.14"
     :maintainer ""
     :author ""
     :licence ""
@@ -33,9 +33,7 @@
          (:file "test-result")
          (:file "responder")
          (:file "group")
-         (:file "testing")
-         (:file "responder-group")
-         (:file "test-result-testing")))
+         (:file "responder-group")))
        (:module "widgets" :components 
         ((:file "register-by-email")
          (:file "test-widget" :depends-on ("main-navigation"))
