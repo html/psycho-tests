@@ -5,7 +5,7 @@
   (let ((responders-grid-widget grid))
     (with-yaclml
       (<:div :class "badges"
-             (dolist (i (all-of group-class))
+             (dolist (i (current-user-groups group-class))
                (<:div :class "outer-badge"
                       (render-widget 
                         (make-instance 'check-button-with-group-id 
@@ -38,6 +38,17 @@
 (defun make-testing-results-page (&rest args)
   (let ((grid (make-instance 'test-results-grid 
                              :allow-add-p nil
+                             :on-query (lambda (grid sort some  &rest args &key countp) 
+                                         (let ((records (find-by 'test-result 
+                                                                 (lambda (item)
+                                                                   (equal 
+                                                                     (slot-value (test-result-owner item) 'owner)
+                                                                     (current-user)))
+                                                                 :order-by sort 
+                                                                 :range some)))
+                                           (if countp 
+                                             (length records)
+                                             records)))
                              :data-class 'test-result 
                              :drilldown-type :data
                              :item-data-view 'test-result-data-view
@@ -54,7 +65,7 @@
                                    (<:div :style "float:right"
                                           (<:as-is (render-inline-link *logout-action* "Logout"))) 
                                    (<:h1 "Results of testing")
-                                   (if (weblocks-utils:first-of 'responder)
+                                   (if (weblocks-utils:first-of 'responder :owner (current-user))
                                      (<:a :href "/testing-results/do-test" :class "btn btn-primary"
                                           (<:i :class "icon-plus-sign icon-white")
                                           (<:as-is "&nbsp;Add test result"))

@@ -146,8 +146,8 @@
                     (:type mustache-template-form 
                      :template #'test-view
                      :persistp nil)
-                    (responder :present-as (select :options (loop for i in (all-of 'responder)
-                                                                  collect (list (slot-value i 'id) (responder-name i)))) 
+                    (responder :present-as (select :options (loop for i in (find-by-values 'responder :owner (current-user))
+                                                                  collect (list (object-id i) (responder-name i)))) 
                                :requiredp t
                                :satisfies (lambda (value)
                                             (find-by-value 'responder 'id (parse-integer value))))

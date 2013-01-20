@@ -14,6 +14,9 @@
                    (values 
                      (first  (find-persistent-objects *default-store* 'user)) t))))))
 
+(defun current-user-groups (group-class)
+  (find-by-values group-class :owner (current-user)))
+
 (defun/cc logout-action (&rest args)
           (register-event "logged-out" :user (object->simple-plist (current-user)))
           (logout)

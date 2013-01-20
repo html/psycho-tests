@@ -4,7 +4,8 @@
 (defclass responder ()
   ((id)
    (name :initform nil :accessor responder-name :initarg :name)
-   (time-created :initform nil :accessor responder-time-created)))
+   (time-created :initform nil :accessor responder-time-created)
+   (owner :initform nil :accessor responder-owner)))
 
 
 (defmethod groups-ids ((obj responder))

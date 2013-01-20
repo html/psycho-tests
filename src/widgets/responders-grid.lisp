@@ -40,19 +40,22 @@
                                do (if (find i groups1 :test #'string=)
                                     (return-from any-group-matches t))))
                        (let ((groups-ids (groups-ids item)))
-                         (if groups-ids
+                         (and 
+                           (slot-value item 'owner)
+                           (equal (slot-value item 'owner) (current-user))
+                           (if groups-ids
 
-                           (progn
-                             (format t "Groups displayed ~A Groups ids ~A ~A~%" 
-                                     (mapcar #'write-to-string groups-displayed)
-                                     (mapcar #'write-to-string groups-ids)
-                                     (any-group-matches 
-                                       (mapcar #'write-to-string groups-displayed) 
-                                       (mapcar #'write-to-string groups-ids)))
-                             (any-group-matches 
-                               (mapcar #'write-to-string groups-displayed) 
-                               (mapcar #'write-to-string groups-ids)))
-                           display-ungrouped-p)))
+                             (progn
+                               (format t "Groups displayed ~A Groups ids ~A ~A~%" 
+                                       (mapcar #'write-to-string groups-displayed)
+                                       (mapcar #'write-to-string groups-ids)
+                                       (any-group-matches 
+                                         (mapcar #'write-to-string groups-displayed) 
+                                         (mapcar #'write-to-string groups-ids)))
+                               (any-group-matches 
+                                 (mapcar #'write-to-string groups-displayed) 
+                                 (mapcar #'write-to-string groups-ids)))
+                             display-ungrouped-p))))
                      :range some
                      :order-by sort))) 
        (if countp 

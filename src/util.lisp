@@ -96,27 +96,6 @@
 (defun destroy-all (cls)
   (mapcar #'destroy (all-of cls))) 
 
-(defun find-by-values (class &rest args &key (test #'equal) &allow-other-keys)
-  (let ((old-package *package*))
-    (in-package :test6) 
-    (defun filter-by-values (object)
-      (loop for key in args by #'cddr do 
-            (let ((value (getf args key))
-                  (test-fun test))
-              (when (and (consp value) (functionp (cdr value)))
-                (setf test-fun (cdr value))
-                (setf value (car value)))
-              (unless (funcall test value (slot-value object (intern (string  key))))
-                (return-from filter-by-values nil))))
-      t) 
-
-    (let ((return (find-persistent-objects *default-store* class :filter #'filter-by-values))) 
-      (eval `(in-package ,(package-name old-package)))
-      return)))
-
-(defun find-by-predicate (class predicate)
-  (find-persistent-objects *default-store* class :filter predicate))
-
 (defmacro with-yaclml (&body body)
   "A wrapper around cl-yaclml with-yaclml-stream macro."
   `(yaclml:with-yaclml-stream *weblocks-output-stream*
@@ -134,3 +113,17 @@
   (with-slots (time-created) item
     (unless time-created
       (setf time-created (get-universal-time)))))
+
+
+(defmethod render-view-field ((field table-view-field)
+                              (view table-view)
+                              widget
+                              (presentation hidden-presentation)
+                              value obj &rest args)
+  (declare (ignore field view widget presentation value obj args)))
+
+(defmethod render-view-field-header :around ((field table-view-field) 
+                                             (view table-view) 
+                                             widget 
+                                             (presentation hidden-presentation) value obj &rest args)
+  )

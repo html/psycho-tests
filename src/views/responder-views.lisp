@@ -71,14 +71,15 @@
                           (let ((group (responder-first-group item)))
                             (when group 
                               (group-name group))))
-                :allow-sorting-p t))
+                :allow-sorting-p t)
+         (owner :present-as hidden))
 
 (defvar *name-taken-error*  "This name has already been taken")
 
 (defview new-responder-form-view (:type form :inherit-from '(:scaffold responder) 
                                         :buttons '((:submit . "Save") (:save-data . "Save and start test" ) :cancel))
          (name :satisfies (lambda (value)
-                            (if (find-by-values 'responder :name value)
+                            (if (find-by-values 'responder :name value :owner (current-user))
                               (values nil *name-taken-error*)
                               t)))
          (group 
@@ -86,7 +87,13 @@
            :writer #'responder-group-writer
            :present-as (bootstrap-typeahead 
                          :choices (groups-to-choices 'group #'group-name)))
-         (time-created :present-as hidden :writer #'time-created-writer))
+         (time-created :present-as hidden :writer #'time-created-writer)
+         (owner 
+           :present-as hidden
+           :reader (lambda (&rest args)
+                     (declare (ignore args)))
+           :writer (lambda (value item)
+                     (setf (slot-value item 'owner) (current-user)))))
 
 (defmacro checked-groups-reader (group-class item-class group-accessor)
   `(lambda (obj)
@@ -125,7 +132,7 @@
          (time-created :present-as hidden :writer #'time-created-writer)
          (name :satisfies (lambda (value)
                             (declare (special *record-validating*))
-                            (let ((records (remove *record-validating* (find-by-values 'responder :name value))))
+                            (let ((records (remove *record-validating* (find-by-values 'responder :name value :owner (current-user)))))
                               (if records 
                                 (values nil *name-taken-error*)
                                 t))))
@@ -133,4 +140,6 @@
            :reader #'responder-group-reader
            :writer #'responder-group-writer
            :present-as (bootstrap-typeahead 
-                         :choices (groups-to-choices 'group #'group-name))))
+                         :choices (groups-to-choices 'group #'group-name)))
+         (owner :present-as hidden :writer (lambda (value item)
+                                             (declare (ignore value item)))))
