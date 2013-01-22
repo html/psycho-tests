@@ -185,3 +185,15 @@ em.required-slot sup {
   float: right;
   margin-right: 25%;
 }
+
+label.radio {
+    white-space: nowrap;
+}
+
+label.control-label {
+    white-space: normal;
+}
+
+.conflict-style .controls {
+    float: left;
+}

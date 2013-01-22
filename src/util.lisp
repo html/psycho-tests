@@ -125,5 +125,9 @@
 (defmethod render-view-field-header :around ((field table-view-field) 
                                              (view table-view) 
                                              widget 
-                                             (presentation hidden-presentation) value obj &rest args)
-  )
+                                             (presentation hidden-presentation) value obj &rest args))
+
+(defmethod render-view-field-header :around ((field table-view-field) 
+                                             (view table-view) 
+                                             (widget datagrid) 
+                                             (presentation hidden-presentation) value obj &rest args))
