@@ -6,6 +6,7 @@
                               :caption "Login"
                               :focusp t)
          (password :requiredp t
+                   :required-indicator nil
                    :present-as (password :max-length 40)
                    :writer (lambda (pwd obj)
                              (setf (slot-value obj 'password)

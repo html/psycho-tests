@@ -29,16 +29,16 @@
         (<:div :class "container"
                (<:br)
                (<:div :class "hero-unit"
-                      (<:h1 "Test 6") 
+                      (<:h1 (<:as-is "Test&nbsp;6")) 
                       (<:p
                         (<:br) 
-                        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests") 
+                        (<:as-is "Hello, you are on test6 - application for editing and organizing psychological tests")) 
                         (<:br) 
                         (<:br) 
                         (render-link #'show-registration-form  "go to registration form" :class "btn btn-primary btn-large") 
                         (<:as-is " or ") 
 
-                        (render-link #'show-login-form  "go to login form" :class "btn btn-primary btn-large"))))))))
+                        (render-link #'show-login-form  "go to login form" :class "btn btn-primary btn-large")))))))
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session (comp)
