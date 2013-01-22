@@ -7,6 +7,10 @@
                            :inherit-from '(:scaffold group))
          (owner :present-as hidden))
 
+(defview groups-table-view (:type table
+                           :inherit-from '(:scaffold group))
+         (owner :present-as hidden))
+
 (defun edit-people-groups (&rest args)
   (do-widget  
     (people-tested-nav-root-widget)
@@ -17,6 +21,7 @@
           (make-instance 'gridedit 
                          :data-class 'group 
                          :item-form-view 'groups-edit-view
+                         :view 'groups-table-view
                          :on-query (lambda (grid sort some  &rest args &key countp) 
                                      (let ((records 
                                              (find-by-values 'group 
