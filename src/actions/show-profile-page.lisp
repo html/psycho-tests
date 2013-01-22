@@ -65,7 +65,7 @@
                                    (<:div :style "float:right"
                                           (<:as-is (render-inline-link *logout-action* "Logout"))) 
                                    (<:h1 "Results of testing")
-                                   (if (weblocks-utils:first-of 'responder :owner (current-user))
+                                   (if (weblocks-utils:first-by-values 'responder :owner (current-user))
                                      (<:a :href "/testing-results/do-test" :class "btn btn-primary"
                                           (<:i :class "icon-plus-sign icon-white")
                                           (<:as-is "&nbsp;Add test result"))
