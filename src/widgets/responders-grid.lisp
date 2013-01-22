@@ -77,7 +77,7 @@
 
 (defwidget responders-grid (grid-separated-form-views)
   ((groups-displayed :initarg :groups-displayed 
-                     :initform (mapcar #'object-id (all-of 'group))
+                     :initform (mapcar #'object-id (current-user-groups 'group))
                      :accessor responders-grid-groups-displayed)
    (display-ungroupedp :initarg :display-ungrouped-p :initform t :accessor responders-grid-display-ungroupedp))
   (:default-initargs 

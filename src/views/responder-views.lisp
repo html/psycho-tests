@@ -37,7 +37,7 @@
 
 (defmacro groups-to-choices (group-class name-accessor)
   `(lambda (&rest args)
-     (loop for i in (all-of ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
+     (loop for i in (current-user-groups ,group-class) collect (cons (funcall ,name-accessor i) (slot-value i 'id)))))
 
 (defun responder-group-writer (value item)
   (let* ((group (and value 
