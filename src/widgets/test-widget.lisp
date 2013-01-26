@@ -46,7 +46,7 @@
 (in-package :test6)
 
 (defun get-test-questions ()
-  (with-open-file (str "test-data.txt")
+  (with-open-file (str (path-in-package :test6 "test-data.txt"))
     (loop for line = (read-line str nil) 
           while line 
           collect (string-trim '(#\Space #\Tab #\Newline) line))))
@@ -58,13 +58,13 @@
         collect (list (intern (format nil "QUESTION-~A" j)) :present-as 'checkbox :label i)))
 
 (defun get-conflict-style-test-questions ()
-  (with-open-file (str "conflict-style-test-data.txt")
+  (with-open-file (str (path-in-package :test6 "conflict-style-test-data.txt"))
     (loop for line = (read-line str nil) 
           while line 
           collect (string-trim '(#\Space #\Tab #\Newline) line))))
 
 (defun get-choices-captions ()
-  (with-open-file (str "conflict-style-choices-captions.txt")
+  (with-open-file (str (path-in-package :test6 "conflict-style-choices-captions.txt"))
     (loop for line = (read-line str nil) 
           while line 
           collect (string-trim '(#\Space #\Tab #\Newline) line))))
@@ -135,10 +135,10 @@
                                               (dataform-data form))))) 
                   (setf (dataform-ui-state form) :form)
                   (answer #'test-action t)
-                  (redirect "/testing-results"))
+                  (redirect (make-webapp-uri "/testing-results")))
     :on-cancel (lambda (form)
                  (answer #'test-action nil)
-                 (redirect "/testing-results")
+                 (redirect (make-webapp-uri "/testing-results"))
                  (throw 'annihilate-dataform nil))
     :dom-class (string-downcase choice)
     :form-view (eval 

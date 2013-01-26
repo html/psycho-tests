@@ -103,11 +103,11 @@ label.checkbox, label.select {
 }
 
 .state-checked {
-    background-image: url(/pub/images/badge/badge.png);
+    background-image: url(~/pub/images/badge/badge.png);
 }
 
 .state-unchecked {
-    background-image: url(/pub/images/badge/badge-transparent.png);
+    background-image: url(~/pub/images/badge/badge-transparent.png);
 }
 
 .check-button a {

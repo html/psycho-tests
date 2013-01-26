@@ -33,10 +33,28 @@
                   (drakma:http-request (format nil "http://gravatar.com/~A.json" (md5-hex email)))
                   :external-format :utf-8))))
 
+
+(defun send-email-copy (host from to subject message 
+                        &key ssl (port (if (eq :tls ssl) 465 25)) cc bcc reply-to extra-headers
+                        html-message display-name authentication
+                        attachments (buffer-size 256) (external-format :utf-8))
+  (cl-smtp::send-smtp host from (cl-smtp::check-arg to "to") subject (cl-smtp::mask-dot message)
+             :port port :cc (cl-smtp::check-arg cc "cc") :bcc (cl-smtp::check-arg bcc "bcc")
+             :reply-to reply-to 
+             :extra-headers extra-headers
+             :html-message html-message
+             :display-name display-name
+             :authentication authentication
+             :attachments (cl-smtp::check-arg attachments "attachments")
+             :buffer-size (if (numberp buffer-size) 
+                            buffer-size
+                            256)
+             :external-format external-format
+             :ssl ssl))
+
 (defun send-email (text &rest recipients)
   "Generic send SMTP mail with some TEXT to RECIEPIENTS"
-  (cl-smtp:with-smtp-mail (out +smtp-server+ +email-from+ recipients :authentication +email-authentication-data+ :ssl :tls)
-    (princ text out)))
+  (send-email-copy +smtp-server+ +email-from+ recipients "" text :authentication +email-authentication-data+ :ssl :tls))
 
 (defun object->simple-plist (object &rest filters)
   (loop for i in (sb-mop:class-direct-slots (find-class (class-name  (class-of object)))) append 
@@ -131,3 +149,21 @@
                                              (view table-view) 
                                              (widget datagrid) 
                                              (presentation hidden-presentation) value obj &rest args))
+
+(defun load-in-current-package (p)
+  (load (path-in-current-package p)))
+
+(defun path-in-package (package p)
+  (format 
+    nil 
+    "~A~A"
+    (weblocks:asdf-system-directory package)
+    p))
+
+(defun path-in-current-package (p)
+  (path-in-package (intern (package-name *package*) "KEYWORD") p))
+
+(defun make-url (url)
+  (format nil "~A~A" (webapp-prefix) url))
+
+(load-in-current-package "src/hunchentoot-tilde-replace-filter.lisp")

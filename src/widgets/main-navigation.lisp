@@ -1,8 +1,8 @@
 (in-package :test6)
 
-(load "src/weblocks-mustache-yaclml-macros.lisp")
-(load "src/weblocks-render-menu-extension.lisp")
-(load "src/weblocks-twitter-bootstrap-tabs-mustache-templates.lisp")
+(load-in-current-package "src/weblocks-mustache-yaclml-macros.lisp")
+(load-in-current-package "src/weblocks-render-menu-extension.lisp")
+(load-in-current-package "src/weblocks-twitter-bootstrap-tabs-mustache-templates.lisp")
 
 (defwidget main-navigation (navigation)
            ())
@@ -21,5 +21,5 @@
 
 (defmethod render-widget-body :before ((widget main-navigation) &rest args)
   (when (string= (request-uri-path) "/")
-    (redirect "/people-tested" :defer nil)))
+    (redirect (make-webapp-uri "/people-tested") :defer nil)))
 

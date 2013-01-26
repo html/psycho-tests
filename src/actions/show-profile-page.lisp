@@ -66,7 +66,7 @@
                                           (<:as-is (render-inline-link *logout-action* "Logout"))) 
                                    (<:h1 "Results of testing")
                                    (if (weblocks-utils:first-by-values 'responder :owner (current-user))
-                                     (<:a :href "/testing-results/do-test" :class "btn btn-primary"
+                                     (<:a :href (make-webapp-uri "/testing-results/do-test") :class "btn btn-primary"
                                           (<:i :class "icon-plus-sign icon-white")
                                           (<:as-is "&nbsp;Add test result"))
                                      (<:div :class "alert"
@@ -101,7 +101,7 @@
                     (<:h1 "People tested"))
                   (render-grid-with-group-filter 
                     :edit-groups-action-title "Edit groups"
-                    :edit-groups-url "/people-tested/edit-groups"
+                    :edit-groups-url (make-webapp-uri "/people-tested/edit-groups")
                     :title-callback #'group-name
                     :group-class 'group
                     :grid grid))
@@ -119,6 +119,8 @@
             (<:br)))
         (make-navigation 
           "left-menu" 
+          (list "" (lambda (&rest args)
+                     (redirect (make-webapp-uri "people-tested") :defer nil)) nil)
           (list "People tested" (make-people-tested-page) "people-tested")
           (list "Testing results" (make-testing-results-page) "testing-results")
           :navigation-class 'main-navigation)))))

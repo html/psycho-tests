@@ -31,4 +31,4 @@
                                        (if countp 
                                          (length records)
                                          records)))))
-        (<:a :href "/people-tested" "Back")))))
+        (<:a :href (make-webapp-uri "/people-tested") "Back")))))

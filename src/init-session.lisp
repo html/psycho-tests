@@ -20,7 +20,7 @@
 (defun/cc logout-action (&rest args)
           (register-event "logged-out" :user (object->simple-plist (current-user)))
           (logout)
-          (redirect "/?action=main"))
+          (redirect (make-webapp-uri "/?action=main")))
 
 (defun main-action (&rest args)
   (do-page 

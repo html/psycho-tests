@@ -33,7 +33,7 @@
 
 (in-package :test6)
 
-(load "src/weblocks-bootstrap-typeahead.lisp")
+(load-in-current-package "src/weblocks-bootstrap-typeahead.lisp")
 
 (defmacro groups-to-choices (group-class name-accessor)
   `(lambda (&rest args)
@@ -60,7 +60,7 @@
   (and (responder-first-group responder)
        (group-name (responder-first-group responder))))
 
-(load "src/weblocks-table-view-with-ordered-fields.lisp")
+(load-in-current-package "src/weblocks-table-view-with-ordered-fields.lisp")
 
 (defview responder-table-view (:type advanced-table :inherit-from '(:scaffold responder)
                                :fields-order '(:id :name :group :time-created))
